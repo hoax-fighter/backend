@@ -26,12 +26,20 @@ axios.get(base_url).then((response) => {
     .then((source) => {
         let userInput = 'Banjir Di Depan Istana';
         source.map((val, idx) => {
-            if(val.te)
-            console.log('jarowinkler', test.methods.jarowinkler(val.title.slice(0,), userInput));
-            console.log('levenshtein', test.methods.levenshtein(val.title, userInput));
-            console.log('stringSimilarity', test.methods.stringSimilarity(val.title, userInput));
+            let hoaxRegex = /(HOAX:)/g;
+            // console.log(hoaxRegex.test(val))
+            if (hoaxRegex.test(val.title)) {
+                let tempArr = val.title.split(': ');
+                // console.log(tempArr);
+                // let realTitle = val.title.slice(0, 5);
+                // console.log('real', realTitle)
+                console.log('jarowinkler', test.methods.jarowinkler(tempArr[1], userInput));
+                console.log('levenshtein', test.methods.levenshtein(tempArr[1], userInput));
+                // console.log('stringSimilarity', val.title, test.methods.stringSimilarity(val.title.slice(0, 5), userInput));
+            }
+            
         })
-        console.log(source)
+        // console.log(source)
         // console.log(test.methods.jarowinkler(source[0].title, source[1].title));
         // console.log(test.methods.levenshtein(source[0].title, source[1].title));
         // console.log(test.methods.stringSimilarity(source[0].title, source[1].title));
