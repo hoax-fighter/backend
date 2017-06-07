@@ -48,9 +48,6 @@ rules.capital = (string) => {
     }
   });
 
-  console.log(capital);
-  console.log(letters.length);
-
   if (capital/(letters.length) > limits.capital) {
     return true;
   }
