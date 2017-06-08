@@ -1,8 +1,8 @@
 const wuzzy = require('wuzzy');
 const stringSimilarity = require('string-similarity');
 
-let string1 = 'bumi datar';
-let string2 = 'bumi itu datar';
+// let string1 = 'bumi datar';
+// let string2 = 'bumi itu datar';
 
 // console.log('string 1: ', string1);
 // console.log('string 2: ', string2);
@@ -28,6 +28,13 @@ methods.stringSimilarity = (str1, str2) => {
   let two = str2.toLowerCase();
   let temp = stringSimilarity.compareTwoStrings(one, two);
   return (Math.round(temp * 100) / 100) * 100;
+}
+
+methods.averagedSimilarity = (str1, str2) => {
+  const jw = methods.jarowinkler(str1, str2);
+  const lv = methods.levenshtein(str1, str2);
+  const sd = methods.stringSimilarity(str1, str2);
+  return (Math.round( ((jw+lv+sd)/3) * 100) /100 ) * 100;
 }
 
 // Jaro-Winkler method kurang OK sepertinya..
