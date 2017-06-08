@@ -1,7 +1,5 @@
 let axios = require('axios');
 let cheerio = require('cheerio');
-// let base_url = 'https://www.turnbackhoax.id/2017/03/';
-let base_url = 'https://www.turnbackhoax.id/2017/03/15/hoax-pendukung-ahok-tidak-paham-sholat-jenazah-tidak-pakai-ruku/';
 
 let arrOfUrl = ['https://www.turnbackhoax.id/2016/11/22/fitnah-rezim-jokowi-membuat-monumen-po-an-tui-milisi-cina-pembantai-pribumi/',
                 'https://www.turnbackhoax.id/2016/11/22/fitnah-grab-indonesia-mendukung-ahok/',

@@ -7,7 +7,16 @@ const limits = {
 
 const rules = {};
 
-const overlyExpressive = ['heboh', 'waspada', 'urgent', 'mantap', 'mengejutkan', 'menggemparkan', 'parah!'];
+const overlyExpressive = ['heboh',
+                          'waspada',
+                          'urgent',
+                          'mantap',
+                          'mengejutkan',
+                          'menggemparkan',
+                          'parah!',
+                          'wow!',
+                          'WHOOPS'
+                          ];
 
 rules.expressive = (string) => {
 
