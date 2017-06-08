@@ -4,7 +4,7 @@ const should = chai.should();
 
 describe('String Similarity Check', function() {
 
-  describe('helper/similarity.js jarowinkler', function() {
+  describe('helper/similarityCheck.js jarowinkler', function() {
 
     it('should return value in percent which represent similarity of two strings', function() {
       const string1 = 'apalah';
@@ -39,7 +39,7 @@ describe('String Similarity Check', function() {
 
   });
 
-  describe('helper/similarity.js levenshtein', function() {
+  describe('helper/similarityCheck.js levenshtein', function() {
 
     it('should return value in percent which represent similarity of two strings', function() {
       const string1 = 'apalah';
@@ -74,7 +74,7 @@ describe('String Similarity Check', function() {
 
   });
 
-  describe('helper/similarity.js sorensendice', function() {
+  describe('helper/similarityCheck.js sorensendice', function() {
 
     it('should return value in percent which represent similarity of two strings', function() {
       const string1 = 'apalah';
@@ -109,7 +109,7 @@ describe('String Similarity Check', function() {
 
   });
 
-  describe('helper/similarity.js averagedSimilarity', function() {
+  describe('helper/similarityCheck.js averagedSimilarity', function() {
 
     it('should return value in percent which represent similarity of two strings', function() {
       const string1 = 'apalah';
