@@ -17,10 +17,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 
 // routes
-const title = require('./routes/title');
+const source = require('./routes/source');
 
 // use the route
-app.use('/api/title', title);
+app.use('/api/source', source);
 
 
 app.listen(app.get('port'), () => {

@@ -1,24 +1,24 @@
-const Title = require('../models/title');
+const Source = require('../models/source');
 const methods = {};
 
 methods.gets = (req, res, next) => {
-  Title.find({}, (err, title) => {
+  Source.find({}, (err, source) => {
     if(err) {
       res.json({error: err, success: false});
     } else {
-      res.json({titles: title, success: true});
+      res.json({sources: source, success: true});
     }
   })
 }
 
 methods.create = (req, res, next) => {
-  Title.create({
-    title: req.body.title
-  }, (err, title) => {
+  Source.create({
+    source: req.body.source
+  }, (err, source) => {
     if(err) {
       res.json({error: err, success: false});
     } else {
-      res.json({title: title, success: true});
+      res.json({source: source, success: true});
     }
   })
 }
