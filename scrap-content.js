@@ -39,15 +39,16 @@ let arrOfUrl1 = ['https://www.turnbackhoax.id/2016/11/22/fitnah-rezim-jokowi-mem
     'https://www.turnbackhoax.id/2017/01/27/hasut-tulisan-indonesia-di-uang-rupiah-emisi-2016-seperti-senjata/',
     'https://www.turnbackhoax.id/2017/01/26/hoax-teman-ahok-akan-bunuh-diri-jika-kalah-di-pilkada-screenshot-tv/',
     'https://www.turnbackhoax.id/2017/01/26/hoax-lsm-preman-dijamu-pembina-preman-kapolda-jabar-foto-makan-bersama/',
+
+];
+
+let arrOfUrl2 = [
     'https://www.turnbackhoax.id/2017/01/26/hoax-biskuit-mudah-terbakar-karena-mengandung-lilin/',
     'https://www.turnbackhoax.id/2017/01/26/hoax-temuan-money-politic-paslon-2-foto-tiga-ibu-memegang-amplop-berisi-uang/',
     'https://www.turnbackhoax.id/2017/01/26/hoax-gedung-putih-dibanjiri-massa-pro-ahok-menuntut-fpi-dibubarkan/',
     'https://www.turnbackhoax.id/2017/01/25/hoax-alm-ust-suratman-meninggal-dunia-setelah-dikeroyok-kader-gmbi/',
     'https://www.turnbackhoax.id/2017/01/25/hoax-jokowi-terobos-kebakaran-pasar-senen-pedagang-teriak-pencitraan/',
     'https://www.turnbackhoax.id/2017/01/25/hoax-kalijodoh-dimiliki-oleh-sinarmas-land/',
-];
-
-let arrOfUrl2 = [
     'https://www.turnbackhoax.id/2017/01/25/hoax-foto-santri-berbaris-bergandengan-tangan-dengan-tulisan-mendukung-fpi-dan-ulama-yang-di-dzolimi/',
     'https://www.turnbackhoax.id/2017/01/24/hoax-foto-hitam-putih-tentara-mengibarkan-bendera-dengan-logo-komunis-dan-uang-pecahan-100-ribu-rupiah/',
     'https://www.turnbackhoax.id/2017/01/08/hoax-ceramah-panglima-tni-gatot-nurmantyo-pada-acara-maulid/',
@@ -109,9 +110,24 @@ arrOfUrl1.map((val, idx) => {
         let $ = cheerio.load(response.data);
         let source = [];
         $('.entry-content').each((i, elm) => {
-            source.push({
-                title: $(elm).children().text().trim()
-            });
+            let w = ['Fakta', 'FAKTA'];
+            var content1 = $(elm).children().text().trim().split('Fakta');
+            var content2 = $(elm).children().text().trim().split('FAKTA');
+            // let tempContent = w.map((val, idx) => {
+            //     return content = $(elm).children().text().trim().split(val);
+            // })
+            if(content1[1] === undefined) {
+                source.push({
+                    hoax: content1[0],
+                    fakta: content2[1]
+                })
+            } else {
+                source.push({
+                    hoax: content1[0],
+                    fakta: content1[1]
+                });
+            }
+            
         });
         return (source);
     })
