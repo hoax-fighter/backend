@@ -1,5 +1,6 @@
 let axios = require('axios');
 let cheerio = require('cheerio');
+const methods = {};
 
 let arrOfUrl1 = ['https://www.turnbackhoax.id/2016/11/22/fitnah-rezim-jokowi-membuat-monumen-po-an-tui-milisi-cina-pembantai-pribumi/',
     'https://www.turnbackhoax.id/2016/11/22/fitnah-grab-indonesia-mendukung-ahok/',
@@ -105,7 +106,8 @@ let arrOfUrl2 = [
     'https://www.turnbackhoax.id/2017/03/05/hasut-terjemahan-koran-berbahasa-arab-bahwa-indonesia-kurang-bertata-krama-terhadap-raja-salman/',
 ]
 
-arrOfUrl1.map((val, idx) => {
+methods.seedData = () => {
+    arrOfUrl1.map((val, idx) => {
     axios.get(val).then((response) => {
         let $ = cheerio.load(response.data);
         let source = [];
@@ -132,6 +134,14 @@ arrOfUrl1.map((val, idx) => {
         return (source);
     })
         .then(source => {
-            console.log(source)
+            // console.log(source)
+            console.log('HOAX', source[0].hoax);
+            // console.log('FAKTA', source[0].fakta);
+            // console.log(source.hoax);
         })
 })
+}
+
+methods.seedData();
+
+module.exports = methods;

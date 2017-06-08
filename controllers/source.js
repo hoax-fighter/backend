@@ -12,8 +12,9 @@ methods.gets = (req, res, next) => {
 }
 
 methods.create = (req, res, next) => {
+  console.log(req.body.source)
   Source.create({
-    source: req.body.source
+    title: req.body.title,
   }, (err, source) => {
     if(err) {
       res.json({error: err, success: false});
