@@ -3,14 +3,7 @@ let cheerio = require('cheerio');
 let test = require('./similarityCheck');
 let rules1 = require('./hoaxRulesCheck');
 
-// let base_url = 'http://www.bca.co.id/id/Individu/Sarana/Kurs-dan-Suku-Bunga/Kurs-dan-Kalkulator';
-// let base_url = 'https://www.turnbackhoax.id/2017/03/';
 let base_url = 'https://www.turnbackhoax.id/2017/02/';
-// https://www.turnbackhoax.id/2017/03/
-// https://www.turnbackhoax.id/2017/01/
-// https://www.turnbackhoax.id/2017/01/page/2/
-// https://www.turnbackhoax.id/2016/12/
-// https://www.turnbackhoax.id/2016/12/page/2/
 let arrOfUrl = ['https://www.turnbackhoax.id/2017/01/',
 	'https://www.turnbackhoax.id/2017/01/page/2/',
 	'https://www.turnbackhoax.id/2017/02/',
@@ -37,11 +30,15 @@ arrOfUrl.map((val, idx) => {
 				let hoaxRegex = /(HOAX:)/g;
 				if (hoaxRegex.test(val.title)) {
 					let tempArr = val.title.split(': ');
-					console.log('jarowinkler', test.methods.jarowinkler(tempArr[1], userInput));
-					console.log('levenshtein', test.methods.levenshtein(tempArr[1], userInput));
-					console.log('expressive', rules1.expressive(tempArr[1]));
-					console.log('exclamation', rules1.exclamation(tempArr[1]));
-					console.log('capital', rules1.capital(tempArr[1]));
+					console.log('jarowinkler', test.methods.jarowinkler(tempArr[1].toLowerCase(), userInput.toLowerCase()));
+					console.log('levenshtein', test.methods.levenshtein(tempArr[1].toLowerCase(), userInput.toLowerCase()));
+					console.log('stringSimilarity', test.methods.stringSimilarity(tempArr[1].toLowerCase(), userInput.toLowerCase()));
+					// console.log('expressive', rules1.expressive(tempArr[1]));
+					// console.log('exclamation', rules1.exclamation(tempArr[1]));
+					// console.log('capital', rules1.capital(tempArr[1]));
+					// console.log('jarowinkler', test.methods.jarowinkler('Setelah pelaku usaha mikro, kecil, dan menengah (UMKM) keberatan, pemerintah memutuskan untuk merevisi batas minimum saldo rekening yang wajib dilaporkan ke Direktorat Jenderal (Ditjen) Pajak.', 'Setelah usaha mikro, kecil dan menengah (UMKM) keberatan atas keberatan tersebut, pemerintah memutuskan untuk merevisi saldo rekening minimum yang harus dilaporkan ke Direktorat Jenderal Pajak (DJP).'));
+					// console.log('levenshtein', test.methods.levenshtein('Setelah pelaku usaha mikro, kecil, dan menengah (UMKM) keberatan, pemerintah memutuskan untuk merevisi batas minimum saldo rekening yang wajib dilaporkan ke Direktorat Jenderal (Ditjen) Pajak.', 'Setelah usaha mikro, kecil dan menengah (UMKM) keberatan atas keberatan tersebut, pemerintah memutuskan untuk merevisi saldo rekening minimum yang harus dilaporkan ke Direktorat Jenderal Pajak (DJP).'));
+					// console.log('stringSimilarity', test.methods.stringSimilarity('Setelah pelaku usaha mikro, kecil, dan menengah (UMKM) keberatan, pemerintah memutuskan untuk merevisi batas minimum saldo rekening yang wajib dilaporkan ke Direktorat Jenderal (Ditjen) Pajak.', 'Setelah usaha mikro, kecil dan menengah (UMKM) keberatan atas keberatan tersebut, pemerintah memutuskan untuk merevisi saldo rekening minimum yang harus dilaporkan ke Direktorat Jenderal Pajak (DJP).'));
 				}
 			})
 		});
