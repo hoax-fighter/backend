@@ -114,7 +114,7 @@ let arrOfPosts4 = [
 
 //seed berurutan -> arrOfPosts1, arrOfPosts2, arrOfPosts3, arrOfPosts4
 methods.seedData = () => {
-    arrOfPosts1.map((val, idx) => {
+    arrOfPosts4.map((val, idx) => {
     axios.get(val).then((response) => {
         let $ = cheerio.load(response.data);
         let source = [];
