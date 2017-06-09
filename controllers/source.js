@@ -22,7 +22,8 @@ methods.create = (req, res, next) => {
   Source.create({
     title: req.body.title,
     hoax: req.body.hoax,
-    fact: req.body.fact
+    fact: req.body.fact,
+    url: req.body.url,
   }, (err, source) => {
     if (err) {
       res.json({ error: err, success: false });

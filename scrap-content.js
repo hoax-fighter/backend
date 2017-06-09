@@ -133,12 +133,14 @@ methods.seedData = () => {
                     title: title,
                     hoax: content1[0],
                     fact: content2[1],
+                    url: val
                 })
             } else {
                 source.push({
                     title: title,
                     hoax: content1[0],
                     fact: content1[1],
+                    url: val
                 });
             }
 
@@ -152,7 +154,8 @@ methods.seedData = () => {
             axios.post('http://localhost:3000/api/source', {
                 title: source[0].title,
                 hoax: source[0].hoax,
-                fact: source[0].fact
+                fact: source[0].fact,
+                url: source[0].url,
             }).then(res => {
                 console.log(res);
             })

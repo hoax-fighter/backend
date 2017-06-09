@@ -11,6 +11,9 @@ let sourceSchema = new Schema({
   fact: {
     type: String
   },
+  url: {
+    type: String
+  }
 })
 
 const Source = mongoose.model('Source', sourceSchema);
