@@ -55,65 +55,65 @@ let arrOfMonth = ['https://www.turnbackhoax.id/2017/01/',
 // ];
 
 // let arrOfPosts2 = [
-    
+
 // ]
 
 methods.seedSource = () => {
 	let results = [];
 
-// 	arrOfPosts1.map((val, idx) => {
-//     axios.get(val).then((response) => {
-//         let $ = cheerio.load(response.data);
-//         let source = [];
-//         $('.entry-content').each((i, elm) => {
-//             let w = ['Fakta', 'FAKTA'];
-//             var content1 = $(elm).children().text().trim().split('Fakta');
-//             var content2 = $(elm).children().text().trim().split('FAKTA');
-//             // let tempContent = w.map((val, idx) => {
-//             //     return content = $(elm).children().text().trim().split(val);
-//             // })
-//             if(content1[1] === undefined) {
-//                 source.push({
-//                     hoax: content1[0],
-//                     fakta: content2[1]
-//                 })
-//             } else {
-//                 source.push({
-//                     hoax: content1[0],
-//                     fakta: content1[1]
-//                 });
-//             }
-            
-//         });
-//         return (source);
-//     })
-//         .then(source => {
-// 						results.push({hoax: source[0].hoax})
-// 						results.push({fact: source[0].fakta})
-//             // console.log(source)
-//             // console.log('HOAX', source[0].hoax);
-//             // console.log('FAKTA', source[0].fakta);
-//             // console.log(source.hoax);
-//         })
-// })
+	// 	arrOfPosts1.map((val, idx) => {
+	//     axios.get(val).then((response) => {
+	//         let $ = cheerio.load(response.data);
+	//         let source = [];
+	//         $('.entry-content').each((i, elm) => {
+	//             let w = ['Fakta', 'FAKTA'];
+	//             var content1 = $(elm).children().text().trim().split('Fakta');
+	//             var content2 = $(elm).children().text().trim().split('FAKTA');
+	//             // let tempContent = w.map((val, idx) => {
+	//             //     return content = $(elm).children().text().trim().split(val);
+	//             // })
+	//             if(content1[1] === undefined) {
+	//                 source.push({
+	//                     hoax: content1[0],
+	//                     fakta: content2[1]
+	//                 })
+	//             } else {
+	//                 source.push({
+	//                     hoax: content1[0],
+	//                     fakta: content1[1]
+	//                 });
+	//             }
 
-arrOfMonth.map((val, idx) => {
-	axios.get(val).then((response) => {
-				let $ = cheerio.load(response.data);
-				let source = [];
-				$('.entry-title').each((i, elm) => {
-					source.push({
-						title: $(elm).text().trim(),
-						// href: $(elm).attr('href')
-					});
+	//         });
+	//         return (source);
+	//     })
+	//         .then(source => {
+	// 						results.push({hoax: source[0].hoax})
+	// 						results.push({fact: source[0].fakta})
+	//             // console.log(source)
+	//             // console.log('HOAX', source[0].hoax);
+	//             // console.log('FAKTA', source[0].fakta);
+	//             // console.log(source.hoax);
+	//         })
+	// })
+
+	arrOfMonth.map((val, idx) => {
+		axios.get(val).then((response) => {
+			let $ = cheerio.load(response.data);
+			let source = [];
+			$('.entry-title').each((i, elm) => {
+				source.push({
+					title: $(elm).text().trim(),
+					// href: $(elm).attr('href')
 				});
-				return (source);
-			})
+			});
+			return (source);
+		})
 			.then((source) => {
 				// console.log(me[0]);
 				source.map((val, idx) => {
 					// console.log(val.title)
-					results.push({title: val.title});
+					results.push({ title: val.title });
 					console.log(results)
 				})
 				// console.log(source.title);
@@ -147,9 +147,9 @@ arrOfMonth.map((val, idx) => {
 				// 	}
 				// })
 			});
-})
+	})
 
-		
+
 	// })
 }
 

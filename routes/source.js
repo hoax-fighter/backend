@@ -4,5 +4,7 @@ const Source = require('../controllers/source');
 
 router.post('/', Source.create);
 router.get('/', Source.gets);
+router.post('/web', Source.web)
+router.post('/news', Source.news)
 
 module.exports = router;
