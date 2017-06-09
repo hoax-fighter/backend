@@ -55,6 +55,8 @@ describe('Hoax Checker API', function() {
           } else {
             console.log(result.body);
             result.body.status.should.equal('success');
+            result.body.should.have.property('tbh');
+            result.body.should.have.property('indications');
           }
           done();
         })
