@@ -40,6 +40,8 @@ const hoaxCheck = (req, res, next) => {
         sources.map((source) => {
           let content = source.hoax.replace('HOAX: ', '');
           content.replace('HASUT: ', '');
+          content.replace('FITNAH: ', '');
+          content.replace('MISINFORMASI: ', '');
           const simVal = similarity.averagedSimilarity(input, content).value;
           if (simVal >= 70) {
             result.tbh.bestMatchContents.push({source: source, similarity: simVal});
