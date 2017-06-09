@@ -31,6 +31,7 @@ input: 'your input here'
 Route | HTTP | Description
 ----- | ---- | -----------
 /api/source/news | POST | POST user input to bing api news function
+
 **request body**
 ```javascript
 word: 'your input here'
