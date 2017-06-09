@@ -2,7 +2,7 @@ let axios = require('axios');
 let cheerio = require('cheerio');
 const methods = {};
 
-let arrOfUrl1 = ['https://www.turnbackhoax.id/2016/11/22/fitnah-rezim-jokowi-membuat-monumen-po-an-tui-milisi-cina-pembantai-pribumi/',
+let arrOfPosts1 = ['https://www.turnbackhoax.id/2016/11/22/fitnah-rezim-jokowi-membuat-monumen-po-an-tui-milisi-cina-pembantai-pribumi/',
     'https://www.turnbackhoax.id/2016/11/22/fitnah-grab-indonesia-mendukung-ahok/',
     'https://www.turnbackhoax.id/2016/12/22/hoax-bahaya-tanaman-penyebab-leukimia/',
     'https://www.turnbackhoax.id/2016/12/22/hasut-negaraku-sudah-dimakar-foto-mobil-avanza-putih-dengan-plat-asing/',
@@ -15,6 +15,9 @@ let arrOfUrl1 = ['https://www.turnbackhoax.id/2016/11/22/fitnah-rezim-jokowi-mem
     'https://www.turnbackhoax.id/2016/12/16/hoax-ahok-melakukan-kristenisasi-di-dki-dengan-menggunakan-apbd/',
     'https://www.turnbackhoax.id/2016/12/16/hoax-lembaga-anti-hoax-koq-akan-dibuat-mabes-polri-bersama-teman-ahok/',
     'https://www.turnbackhoax.id/2016/12/16/hasut-bravo-jokowi-bravo-ahok-makin-menjamur-psk-amoy-asal-cina-di-jakarta-raup-rp-40-miliarbulan/',
+];
+
+let arrOfPosts2 = [
     'https://www.turnbackhoax.id/2016/12/16/hoax-sebelum-tahun-1960-tak-pernah-dijumpai-nama-hari-yang-bertuliskan-minggu-selalu-tertulis-hari-ahad/',
     'https://www.turnbackhoax.id/2016/12/16/hasut-aceh-boikot-nasdem-surya-paloh-atau-surya-paleh-penghianat-agam/',
     'https://www.turnbackhoax.id/2016/12/16/hoax-paus-yohanes-ii-masuk-islam/',
@@ -40,10 +43,9 @@ let arrOfUrl1 = ['https://www.turnbackhoax.id/2016/11/22/fitnah-rezim-jokowi-mem
     'https://www.turnbackhoax.id/2017/01/27/hasut-tulisan-indonesia-di-uang-rupiah-emisi-2016-seperti-senjata/',
     'https://www.turnbackhoax.id/2017/01/26/hoax-teman-ahok-akan-bunuh-diri-jika-kalah-di-pilkada-screenshot-tv/',
     'https://www.turnbackhoax.id/2017/01/26/hoax-lsm-preman-dijamu-pembina-preman-kapolda-jabar-foto-makan-bersama/',
+]
 
-];
-
-let arrOfUrl2 = [
+let arrOfPosts3 = [
     'https://www.turnbackhoax.id/2017/01/26/hoax-biskuit-mudah-terbakar-karena-mengandung-lilin/',
     'https://www.turnbackhoax.id/2017/01/26/hoax-temuan-money-politic-paslon-2-foto-tiga-ibu-memegang-amplop-berisi-uang/',
     'https://www.turnbackhoax.id/2017/01/26/hoax-gedung-putih-dibanjiri-massa-pro-ahok-menuntut-fpi-dibubarkan/',
@@ -67,6 +69,9 @@ let arrOfUrl2 = [
     'https://www.turnbackhoax.id/2017/01/03/hasut-bendera-pada-foto-presiden-dan-wakil-presiden-berwarna-merah/',
     'https://www.turnbackhoax.id/2017/01/03/hoax-ahok-ziarah-ke-makam-ibu-angkatnya-memakai-sepatu/',
     'https://www.turnbackhoax.id/2017/02/27/hoax-parasetamol-mengandung-virus/',
+]
+
+let arrOfPosts4 = [
     'https://www.turnbackhoax.id/2017/02/27/hoax-foto-bambang-tri-kondisi-terbaru/',
     'https://www.turnbackhoax.id/2017/02/22/hasut-foto-foto-aparat-bersenjata-di-jakarta/',
     'https://www.turnbackhoax.id/2017/02/22/hoax-banjir-di-depan-istana/',
@@ -106,13 +111,18 @@ let arrOfUrl2 = [
     'https://www.turnbackhoax.id/2017/03/05/hasut-terjemahan-koran-berbahasa-arab-bahwa-indonesia-kurang-bertata-krama-terhadap-raja-salman/',
 ]
 
+
+//seed berurutan -> arrOfPosts1, arrOfPosts2, arrOfPosts3, arrOfPosts4
 methods.seedData = () => {
-    arrOfUrl1.map((val, idx) => {
+    arrOfPosts4.map((val, idx) => {
     axios.get(val).then((response) => {
         let $ = cheerio.load(response.data);
         let source = [];
-        $('.entry-content').each((i, elm) => {
+        $('article').each((i, elm) => {
             let w = ['Fakta', 'FAKTA'];
+            // var header = $(elm).text()
+            // console.log($(elm).children()[0].children[0].children[0].data)
+            var title = $(elm).children()[0].children[0].children[0].data;
             var content1 = $(elm).children().text().trim().split('Fakta');
             var content2 = $(elm).children().text().trim().split('FAKTA');
             // let tempContent = w.map((val, idx) => {
@@ -120,13 +130,15 @@ methods.seedData = () => {
             // })
             if(content1[1] === undefined) {
                 source.push({
+                    title: title,
                     hoax: content1[0],
-                    fakta: content2[1]
+                    fact: content2[1],
                 })
             } else {
                 source.push({
+                    title: title,
                     hoax: content1[0],
-                    fakta: content1[1]
+                    fact: content1[1],
                 });
             }
             
@@ -134,8 +146,17 @@ methods.seedData = () => {
         return (source);
     })
         .then(source => {
-            // console.log(source)
-            console.log('HOAX', source[0].hoax);
+            // console.log(source[0]);
+            // console.log(source[0].hoax);
+            // console.log(source[0].fakta);
+            axios.post('http://localhost:3000/api/source', {
+                title: source[0].title,
+                hoax: source[0].hoax,
+                fact: source[0].fact
+            }).then(res => {
+                console.log(res);
+            })
+            // console.log('HOAX', source[0].hoax);
             // console.log('FAKTA', source[0].fakta);
             // console.log(source.hoax);
         })
