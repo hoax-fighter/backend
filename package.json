@@ -3,6 +3,7 @@
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
     "chai": "^4.0.2",
+    "chai-http": "^3.0.0",
     "cheerio": "^1.0.0-rc.1",
     "cors": "^2.8.3",
     "dotenv": "^4.0.0",
@@ -15,6 +16,7 @@
     "test": "test"
   },
   "scripts": {
+    "start": "node app.js",
     "test": "NODE_ENV=test mocha"
   }
 }
