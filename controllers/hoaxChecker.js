@@ -17,12 +17,44 @@ const hoaxCheck = (req, res, next) => {
         const input = req.body.input;
 
         result.status = 'success';
-        result.similarity = [];
+        result.tbh = {
+          bestMatchTitles: [],
+          bestMatchContents: [],
+          bestMatchSentences: []
+        };
 
+        // similarity check
+        sources.map((source) => {
+          let title = source.title.replace('HOAX: ', '');
+          title.replace('HASUT: ', '');
+          const simVal = similarity.averagedSimilarity(input, title).value;
+          if (simVal >= 75) {
+              result.tbh.bestMatchTitles.push({source: source, similarity: simVal});
+          }
+        });
 
         sources.map((source) => {
-          result.similarity.push(similarity.averagedSimilarity(input, source.hoax));
+          let content = source.hoax.replace('HOAX: ', '');
+          content.replace('HASUT: ', '');
+          const simVal = similarity.averagedSimilarity(input, content).value;
+          if (simVal >= 70) {
+              result.tbh.bestMatchContents.push({source: source, similarity: simVal});
+          }
         });
+
+        sources.map((source) => {
+          const sentences = source.hoax.split('\n');
+          sentences.map((sentence) => {
+            let trimmed = sentence.replace('HOAX: ', '');
+            trimmed.replace('HASUT: ', '');
+            const simVal = similarity.averagedSimilarity(input, trimmed).value;
+            if (simVal >= 75) {
+                result.tbh.bestMatchSentences.push({source: source, similarity: simVal});
+            }
+          });
+        });
+
+
 
         res.send(result);
 
