@@ -11,11 +11,23 @@ Route | HTTP | Description
 /api/source | GET | Get all hoax source
 
 **Include this on your POST req on Source API as a body**
+```javascript
 1. title: 'your title here'
 2. fact: 'your fact here'
 3. hoax: 'your hoax here'
+```
 
-### Checker API
+### Checker DB Turn Back Hoax API
 Route | HTTP | Description
 ----- | ---- | -----------
 /api/check | POST | POST user input to hoax checker function
+
+**request body**
+```javascript
+input: 'your input here'
+```
+
+### Checker API BING NEWS
+Route | HTTP | Description
+----- | ---- | -----------
+/api/source/news | POST | POST user input to bing api news function
