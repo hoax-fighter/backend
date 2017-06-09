@@ -1,7 +1,7 @@
 const Source = require('../models/source');
 const similarity = require('../helper/similarityCheck');
 const rules = require('../helper/hoaxRulesCheck');
-const negation = require('../helper/negationCheck');
+const negationCheck = require('../helper/negationCheck');
 
 const hoaxCheck = (req, res, next) => {
 
@@ -32,7 +32,8 @@ const hoaxCheck = (req, res, next) => {
           title.replace('MISINFORMASI: ', '');
           const simVal = similarity.averagedSimilarity(input, title).value;
           if (simVal >= 75) {
-              result.tbh.bestMatchTitles.push({source: source, similarity: simVal});
+            const negation = negationCheck(input, title);
+            result.tbh.bestMatchTitles.push({source: source, similarity: simVal, negation: negation});
           }
         });
 
@@ -41,7 +42,7 @@ const hoaxCheck = (req, res, next) => {
           content.replace('HASUT: ', '');
           const simVal = similarity.averagedSimilarity(input, content).value;
           if (simVal >= 70) {
-              result.tbh.bestMatchContents.push({source: source, similarity: simVal});
+            result.tbh.bestMatchContents.push({source: source, similarity: simVal});
           }
         });
 
@@ -54,7 +55,8 @@ const hoaxCheck = (req, res, next) => {
             trimmed.replace('MISINFORMASI: ', '');
             const simVal = similarity.averagedSimilarity(input, trimmed).value;
             if (simVal >= 75) {
-                result.tbh.bestMatchSentences.push({source: source, similarity: simVal});
+              const negation = negationCheck(input, sentence);
+              result.tbh.bestMatchSentences.push({source: source, similarity: simVal, negation: negation});
             }
           });
         });
