@@ -3,6 +3,10 @@ var Bing = require('node-bing-api')({ accKey: "7cfeae3d1999482fb0c8fb6c8c7e77e4"
 const Source = require('../models/source');
 const methods = {};
 
+const webCheck = require('../helper/webCheck')
+
+const similarityCheck = require('../helper/similarityCheck')
+
 methods.gets = (req, res, next) => {
   Source.find({}, (err, source) => {
     if (err) {
@@ -30,7 +34,8 @@ methods.create = (req, res, next) => {
 
 methods.web = (req, res, next) => {
   Bing.web(req.body.word, {
-    count: 10,
+    market: 'en-ID',
+    count: 15,
   }, function (error, result, body) {
     if (error) {
       res.json({
@@ -39,6 +44,7 @@ methods.web = (req, res, next) => {
         message: 'Cari Web Gagal'
       })
     } else {
+      // webCheck(body.webPages.value)
       res.json({
         error: null,
         success: true,
@@ -53,7 +59,7 @@ methods.web = (req, res, next) => {
 methods.news = (req, res, next) => {
   Bing.news(req.body.word, {
     market: 'en-ID',
-    top: 10
+    count: 15
   },
     function (error, result, body) {
 
@@ -64,24 +70,37 @@ methods.news = (req, res, next) => {
           message: 'Cari Berita Gagal'
         })
       } else {
-        let obj = {}
-        let arr1 = []
-        body.value.map(function (arr) {
-          obj.name = arr.name
-          obj.url = arr.url
-          obj.description = arr.description
-          obj.provider = arr.provider[0].name
-          obj.datePublished = arr.datePublished
-          arr1.push(obj)
 
-          obj = {}
-        })
+        if (body.value.length == 0) {
+          res.json({
+            record: [],
+            message: 'Kemungkinan Hoax'
+          })
+        } else {
 
-        res.json({
-          success: true,
-          record: arr1,
-          message: 'Cari Berita Berhasil'
-        })
+          let obj = {}
+          let arr1 = []
+          body.value.map(function (arr) {
+            var hasil = similarityCheck.averagedSimilarity(arr.name, req.body.word)
+            if (hasil.status == 'success') {
+              obj.hasil = hasil.value
+            }
+            obj.name = arr.name
+            obj.url = arr.url
+            obj.description = arr.description
+            obj.provider = arr.provider[0].name
+            obj.datePublished = arr.datePublished
+            arr1.push(obj)
+
+            obj = {}
+          })
+
+          res.json({
+            success: true,
+            record: arr1,
+            message: 'Cari Berita Berhasil'
+          })
+        }
       }
 
     });
