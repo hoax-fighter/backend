@@ -88,3 +88,12 @@ methods.news = (req, res, next) => {
 }
 
 module.exports = methods;
+
+methods.delete = (req, res, next) => {
+  Source.remove({}, function(err) {
+    res.json({status: 'success', message: 'database is now empty'});
+  })
+}
+
+module.exports = methods;
+

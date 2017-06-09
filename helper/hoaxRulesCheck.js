@@ -65,5 +65,60 @@ rules.capital = (string) => {
 
 }
 
+rules.check = (string) => {
+  let result = {};
+
+  if (string) {
+
+    if (typeof string === 'string') {
+
+      if (string.length > 0) {
+
+        result.status = 'success';
+        result.summary = false;
+        result.expression = false;
+        result.exclamation = false;
+        result.capital = false;
+
+        if (rules.expressive(string)) {
+          result.expressive = true;
+        }
+
+        if (rules.exclamation(string)) {
+          result.exclamation = true;
+        }
+
+        if (rules.capital(string)) {
+          result.capital = true;
+        }
+
+        if (result.expressive || result.exclamation || result.capital) {
+          result.summary = true;
+        }
+
+        return result;
+
+      }
+
+      result.status = 'error';
+      result.message = 'input must not be empty';
+
+      return result;
+
+    }
+
+    result.status = 'error';
+    result.message = 'input must be string';
+
+    return result;
+
+  }
+
+  result.status = 'error';
+  result.message = 'input must not be empty';
+
+  return result;
+}
+
 
 module.exports = rules;
