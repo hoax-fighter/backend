@@ -9,6 +9,7 @@
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "mongoose": "^4.10.5",
+    "node-bing-api": "^3.2.1",
     "string-similarity": "^1.2.0",
     "wuzzy": "^0.1.3"
   },
