@@ -1,7 +1,9 @@
 const axios = require('axios');
 const sourceEndPoint = 'http://localhost:3000/api/source';
-// const title = require('../scrap');
+const title = require('../scrap');
 const methods = {};
+
+console.log(title.seedSource())
 
 let titles = [
   'HOAX: Kerjasama Dengan Tiongkok Membuat Rel Kereta Cepat Di Uni Emirat Arab Dapat Hadiah Jutaan Pil Ekstasi',
@@ -102,16 +104,18 @@ let titles = [
   'HOAX: Yang Benci FPI Ada Lima (Foto Gus Mus)',
 ]
 
-methods.seederOfTitle = () => {
-  titles.map((val, idx) => {
-  axios.post(sourceEndPoint, {
-    // console.log(val)
-    title: val
-  }).then(res => {
-    console.log(res.data)
-  })
-})
-}
 
-methods.seederOfTitle();
+
+// methods.seederOfTitle = () => {
+//   titles.map((val, idx) => {
+//   axios.post(sourceEndPoint, {
+//     // console.log(val)
+//     title: val
+//   }).then(res => {
+//     console.log(res.data)
+//   })
+// })
+// }
+
+// methods.seederOfTitle();
 
