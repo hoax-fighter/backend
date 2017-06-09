@@ -22,11 +22,14 @@ const hoaxCheck = (req, res, next) => {
           bestMatchContents: [],
           bestMatchSentences: []
         };
+        result.indications = {};
 
         // similarity check
         sources.map((source) => {
           let title = source.title.replace('HOAX: ', '');
           title.replace('HASUT: ', '');
+          title.replace('FITNAH: ', '');
+          title.replace('MISINFORMASI: ', '');
           const simVal = similarity.averagedSimilarity(input, title).value;
           if (simVal >= 75) {
               result.tbh.bestMatchTitles.push({source: source, similarity: simVal});
@@ -47,6 +50,8 @@ const hoaxCheck = (req, res, next) => {
           sentences.map((sentence) => {
             let trimmed = sentence.replace('HOAX: ', '');
             trimmed.replace('HASUT: ', '');
+            trimmed.replace('FITNAH: ', '');
+            trimmed.replace('MISINFORMASI: ', '');
             const simVal = similarity.averagedSimilarity(input, trimmed).value;
             if (simVal >= 75) {
                 result.tbh.bestMatchSentences.push({source: source, similarity: simVal});
@@ -54,7 +59,8 @@ const hoaxCheck = (req, res, next) => {
           });
         });
 
-
+        //input hoax indications rules check
+        result.indications = rules.check(input);
 
         res.send(result);
 
