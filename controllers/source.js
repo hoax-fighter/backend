@@ -54,11 +54,12 @@ methods.web = (req, res, next) => {
           obj.hasil = hasil.value
         }
         obj.id = arr.id;
+        obj.provider = arr.displayUrl;
         obj.name = arr.name;
-        obj.url = arr.url;
+        obj.bingUrl = arr.url;
         obj.dateLastCrawled = arr.dateLastCrawled;
-        obj.displayUrl = arr.displayUrl;
-        obj.snippet = arr.snippet;
+        obj.url = arr.displayUrl;
+        obj.description = arr.snippet;
         arr1.push(obj)
 
         obj = {}
