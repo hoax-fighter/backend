@@ -1,27 +1,27 @@
-const axios = require('axios');
-const newsSourceEndPoint = 'http://localhost:3002/api/source/news-source';
+const axios = require("axios");
+const newsSourceEndPoint = "http://localhost:3002/api/source/news-source";
 const methods = {};
 
 const source = [
 
-  ['kompas',
-  'detik',
-  'okezone',
-  'liputan6',
-  'metrotv',
-  'metrotvnews',
-  'tribun',
-  'tribunnews',
-  'mediaindonesia',
-  'republika',
-  'tempo',
-  'antara',
-  'bbc.com/indonesia',
-  'pikiran-rakyat',
-  'suaramerdeka',
-  'jawapos',
-  'turnbackhoax',
-  'gatra'],
+  ["kompas",
+  "detik",
+  "okezone",
+  "liputan6",
+  "metrotv",
+  "metrotvnews",
+  "tribun",
+  "tribunnews",
+  "mediaindonesia",
+  "republika",
+  "tempo",
+  "antara",
+  "bbc.com/indonesia",
+  "pikiran-rakyat",
+  "suaramerdeka",
+  "jawapos",
+  "turnbackhoax",
+  "gatra"],
 
   ["youtube",
   "blogspot",
@@ -37,4 +37,3 @@ const source = [
   ]
 
 ]
-
