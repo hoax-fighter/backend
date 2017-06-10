@@ -12,7 +12,7 @@ const webCheck = (foundSources, reputableSources, nonReputableSources) => {
         reputableSources.map(reputable => {
             let pattern = new RegExp(reputable, "gi")
             if (pattern.test(source.displayUrl)) {
-                console.log('ketemu yang reputable', source.displayUrl, reputable)
+                // console.log('ketemu yang reputable', source.displayUrl, reputable)
                 positiveValue += 1;
                 source.isUrlReputable = true;
             }
@@ -23,15 +23,15 @@ const webCheck = (foundSources, reputableSources, nonReputableSources) => {
         nonReputableSources.map(reputable => {
             let pattern = new RegExp(reputable, "gi")
             if (pattern.test(source.displayUrl)) {
-                console.log('ketemu yang nonReputable', source.displayUrl, reputable)
+                // console.log('ketemu yang nonReputable', source.displayUrl, reputable)
                 negativeValue += 1;
                 source.isUrlReputable = false;
             }
         })
     })
 
-    console.log('ketemu positip', positiveValue);
-    console.log('ketemu negatip', negativeValue);
+    // console.log('ketemu positip', positiveValue);
+    // console.log('ketemu negatip', negativeValue);
 
     return {
       reputable: positiveValue,
