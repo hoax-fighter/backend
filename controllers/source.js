@@ -18,7 +18,6 @@ methods.gets = (req, res, next) => {
 }
 
 methods.create = (req, res, next) => {
-  console.log(req.body.source)
   Source.create({
     title: req.body.title,
     hoax: req.body.hoax,
@@ -107,8 +106,6 @@ methods.news = (req, res, next) => {
     });
 }
 
-module.exports = methods;
-
 methods.delete = (req, res, next) => {
   Source.remove({}, function(err) {
     res.json({status: 'success', message: 'database is now empty'});
@@ -116,4 +113,3 @@ methods.delete = (req, res, next) => {
 }
 
 module.exports = methods;
-
