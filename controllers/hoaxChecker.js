@@ -1,7 +1,11 @@
+const axios = require('axios');
 const Source = require('../models/source');
+// const newsSearch = require('../controllers/source').news;
+// const webSearch = require('../controllers/source').web;
 const similarity = require('../helper/similarityCheck');
 const rules = require('../helper/hoaxRulesCheck');
 const negationCheck = require('../helper/negationCheck');
+const webCheck = require('../helper/webCheck');
 
 const hoaxCheck = (req, res, next) => {
 
@@ -22,7 +26,6 @@ const hoaxCheck = (req, res, next) => {
           bestMatchContents: [],
           bestMatchSentences: []
         };
-        result.indications = {};
 
         // similarity check
         sources.map((source) => {
@@ -63,10 +66,111 @@ const hoaxCheck = (req, res, next) => {
           });
         });
 
-        //input hoax indications rules check
-        result.indications = rules.check(input);
+        console.log(result.tbh);
 
-        res.send(result);
+        if (result.tbh.bestMatchContents.length > 0 || result.tbh.bestMatchSentences.length > 0) {
+
+          let maxSimVal = 0;
+          let relatedEntries = [];
+          let conclusion = '';
+
+          if (result.tbh.bestMatchContents.length > 0) {
+            result.tbh.bestMatchContents.map((match) => {
+              relatedEntries.push(match);
+              if (match.similarity > maxSimVal && match.negation.isHoax) {
+                maxSimVal = match.similarity;
+              }
+            });
+          }
+          if (result.tbh.bestMatchSentences.length > 0) {
+            result.tbh.bestMatchSentences.map((match) => {
+              relatedEntries.push(match);
+              if (match.similarity > maxSimVal && match.negation.isHoax) {
+                maxSimVal = match.similarity;
+              }
+            });
+          }
+
+          if (relatedEntries.length > 0) {
+            conclusion = "Kemungkinan Besar Hoax";
+          } else {
+            conclusion = "Kemungkinan Bukan Hoax";
+          }
+
+          res.send({
+            success: true,
+            maxSimVal: maxSimVal,
+            sources: relatedEntries,
+            conclusion: conclusion
+          });
+
+        } else {
+
+          // not found in tbh database, next steps
+
+          //input hoax indications rules check
+          result.indications = {};
+          result.indications = rules.check(input);
+
+          axios.post('http://localhost:3000/api/source/news', {word: input})
+            .then((response) => {
+
+              if (response.data.record.length > 0) {
+
+                let maxSimVal = 0;
+                let conclusion = '';
+                response.data.record.map((news) => {
+                  if (news.hasil > maxSimVal) {
+                    maxSimVal = news.hasil;
+                  }
+                });
+
+                if (maxSimVal >= 75) {
+                  conclusion = `Kemungkinan Besar Fakta`;
+                } else if (maxSimVal >= 55) {
+                  conclusion = `Kemungkinan Fakta`;
+                } else {
+                  conclusion = `Kemungkinan Hoax`;
+                }
+
+                res.send({
+                  success: true,
+                  maxSimVal: maxSimVal,
+                  conclusion: conclusion,
+                  sources: response.data.record,
+                });
+
+              } else {
+
+                axios.post('http://localhost:3000/api/source/web', {word: input})
+                  .then((response) => {
+
+                    res.send({
+                      success: true,
+                      conclusion: 'Kemungkinan Besar Hoax',
+                      sources: response.data
+                    });
+
+                  })
+                  .catch((err) => {
+                    res.json({
+                      success: false,
+                      error: err,
+                      message: 'Cari Berita Gagal'
+                    })
+                  });
+              }
+
+            })
+            .catch((err) => {
+              res.json({
+                success: false,
+                error: err,
+                message: 'Cari Berita Gagal'
+              })
+            });
+
+        }
 
       }
     });

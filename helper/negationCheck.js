@@ -148,7 +148,8 @@ const negationCheck = (string, hoax) => {
 
             result.status = 'success';
             result.result = true;
-            result.message = 'the string without negation finds similarity > 90 %, most likely a hoax';
+            result.isHoax = false;
+            result.message = 'the string without negation finds similarity > 90 %, most likely not a hoax';
             // console.log(result);
             return result;
 
@@ -156,7 +157,8 @@ const negationCheck = (string, hoax) => {
 
           result.status = 'success';
           result.result = false;
-          result.message = 'the string without negation does not find similarity > 90 %, probably not a hoax';
+          result.isHoax = true;
+          result.message = 'the string without negation does not find similarity > 90 %, most likely a hoax';
           // console.log(result);
           return result;
 
@@ -164,6 +166,7 @@ const negationCheck = (string, hoax) => {
 
         result.status = 'success';
         result.result = false;
+        result.isHoax = false;
         result.message = 'no title is higher than 75% in similarity';
         // console.log(result);
         return result;
@@ -171,6 +174,7 @@ const negationCheck = (string, hoax) => {
 
       result.status = 'success';
       result.result = false;
+      result.isHoax = true;
       result.message = 'negation is not found in the string';
       // console.log(result);
       return result;
