@@ -95,7 +95,7 @@ const hoaxCheck = (req, res, next) => {
 
           res.send({
             success: true,
-            message: 'found in turnbackhoax.com',
+            message: 'found in turnbackhoax.id',
             maxSimVal: maxSimVal,
             sources: relatedEntries,
             conclusion: conclusion
@@ -173,7 +173,12 @@ const hoaxCheck = (req, res, next) => {
                           percentage: percentage,
                           message: message,
                           conclusion: conclusion,
-                          sources: analyzedSources
+                          information: {
+                            reputable: analyzedSources.reputable,
+                            blacklist: analyzedSources.blacklist,
+                            nonReputable: analyzedSources.nonReputable
+                          },
+                          sources: analyzedSources.sources
                         });
 
                       })
