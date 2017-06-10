@@ -45,10 +45,28 @@ methods.web = (req, res, next) => {
       })
     } else {
       // webCheck(body.webPages.value)
+
+      let obj = {}
+      let arr1 = []
+      body.webPages.value.map(function (arr) {
+        var hasil = similarityCheck.averagedSimilarity(arr.name, req.body.word)
+        if (hasil.status == 'success') {
+          obj.hasil = hasil.value
+        }
+        obj.id = arr.id;
+        obj.name = arr.name;
+        obj.url = arr.url;
+        obj.dateLastCrawled = arr.dateLastCrawled;
+        obj.displayUrl = arr.displayUrl;
+        obj.snippet = arr.snippet;
+        arr1.push(obj)
+
+        obj = {}
+      })
+
       res.json({
-        error: null,
         success: true,
-        record: body.webPages.value,
+        record: arr1,
         message: 'Cari Web Berhasil'
       })
     }
