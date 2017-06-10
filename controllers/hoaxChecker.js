@@ -112,7 +112,7 @@ const hoaxCheck = (req, res, next) => {
           result.indications = {};
           result.indications = rules.check(input);
 
-          axios.post('http://localhost:3000/api/source/news', {word: input})
+          axios.post('http://localhost:3002/api/source/news', {word: input})
             .then((response) => {
 
               if (response.data.record.length > 0) {
@@ -142,7 +142,7 @@ const hoaxCheck = (req, res, next) => {
 
               } else {
 
-                axios.post('http://localhost:3000/api/source/web', {word: input})
+                axios.post('http://localhost:3002/api/source/web', {word: input})
                   .then((response) => {
 
                     res.send({

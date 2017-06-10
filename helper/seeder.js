@@ -1,5 +1,5 @@
 const axios = require('axios');
-const newsSourceEndPoint = 'http://localhost:4000/api/source/news-source';
+const newsSourceEndPoint = 'http://localhost:3002/api/source/news-source';
 const methods = {};
 
 const source = [

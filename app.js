@@ -25,7 +25,7 @@ mongoose.connect(db_config[app_env], function(err, res) {
 });
 
 // port setup
-app.set('port', process.env.PORT || 4000);
+app.set('port', process.env.PORT || 3002);
 
 // bodyparser setup
 app.use(bodyParser.json())

@@ -119,7 +119,7 @@ methods.seedSource = () => {
 				// console.log(source.title);
 				// source.map((val, idx) => {
 				// 	// console.log(typeof val)
-				// 	axios.post('http://localhost:3000/api/source', {
+				// 	axios.post('http://localhost:3002/api/source', {
 				// 		source: val.title,
 				// 	}).then(res => {
 				// 			console.log(res.data)
