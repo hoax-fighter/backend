@@ -44,7 +44,7 @@ describe('Hoax Checker API', function() {
       })
     });
 
-    it('should return status success if input is not empty', function(done) {
+    it('should return status success true and properties of sources and conclusion if input is not empty', function(done) {
       const search = {input: 'tanaman penyebab leukimia'};
       chai.request(server)
         .post('/api/check')
@@ -53,10 +53,10 @@ describe('Hoax Checker API', function() {
           if (err) {
             console.log('error');
           } else {
-            console.log(result.body);
-            result.body.status.should.equal('success');
-            result.body.should.have.property('tbh');
-            result.body.should.have.property('indications');
+            // console.log(result.body);
+            result.body.success.should.equal(true);
+            result.body.should.have.property('sources');
+            result.body.should.have.property('conclusion');
           }
           done();
         })
