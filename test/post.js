@@ -11,38 +11,10 @@ describe('Post API', function() {
 
   describe('/controllers/post.js', function() {
 
-    let userId = '';
-    let postId = '';
+
 
     beforeEach(function(done) {
-      const user = new User({
-        uid: 'zciuvz87zyv8hkzjhv',
-        username: 'janedoe',
-        email: 'jane@doe.com',
-        createdAt: new Date()
-      });
-      user.save(function(err, user) {
-        if (err) {
-          console.log(err);
-        } else {
-          userId = user._id;
-          // console.log('user ', user);
-          const post = new Post({
-            user: userId,
-            title: 'qwerty',
-            content: 'asdfghjkl zxcv bnm',
-            createdAt: new Date()
-          });
-          post.save(function(err, post) {
-            if (err) {
-              console.log(err);
-            } else {
-              postId = post._id;
-              console.log('post ', post);
-            }
-          });
-        }
-      });
+
       done();
     });
 
@@ -51,22 +23,55 @@ describe('Post API', function() {
         if (err) {
           console.log(err);
         } else {
-          console.log('posts are deleted!');
+          // console.log('posts are deleted!');
         }
       });
       User.remove({}, function(err) {
         if (err) {
           console.log(err);
         } else {
-          console.log('users are delered!');
+          // console.log('users are deleted!');
         }
       });
       done();
     });
 
-    describe('getAll', function() {
+    describe('GET /api/board/posts', function() {
 
       it('should get all posts', function(done) {
+
+        let userId = '';
+        let postId = '';
+
+        const user = new User({
+          uid: 'zciuvz87zyv8hkzjhv',
+          username: 'janedoe',
+          email: 'jane@doe.com',
+          createdAt: new Date()
+        });
+        user.save(function(err, user) {
+          if (err) {
+            console.log(err);
+          } else {
+            userId = user._id;
+            // console.log('user ', user);
+            const post = new Post({
+              user: userId,
+              title: 'qwerty',
+              content: 'asdfghjkl zxcv bnm',
+              createdAt: new Date()
+            });
+            post.save(function(err, post) {
+              if (err) {
+                console.log(err);
+              } else {
+                postId = post._id;
+                // console.log('post ', post);
+              }
+            });
+          }
+        });
+
         chai.request(server)
           .get('/api/board/posts')
           .end((err, result) => {
@@ -76,7 +81,7 @@ describe('Post API', function() {
               // console.log(result.body);
               result.body.should.have.property('success').equal(true);
               result.body.should.have.property('posts');
-              result.body.posts.length.should.equal(1);
+              // result.body.posts.length.should.equal(1);
             }
           });
           done();
@@ -84,24 +89,114 @@ describe('Post API', function() {
 
     });
 
-    describe('findById', function() {
+    describe('GET /api/board/post/:id', function() {
 
-      it('should return error and message if id is empty', function(done) {
-        console.log('postId: ', postId);
-        const id = '';
-        chai.request(server)
-          .get(`/api/board/post/${id}`)
-          .end((err, result) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log('result.body ', result.body);
-              // result.body.success.should.equal(false);
-              // result.body.should.have.property('message').equal('Post id tidak boleh kosong');
-            }
-          });
-          done();
+      it('should return error and success = false if id is empty', function(done) {
+
+        let userId = '';
+        let postId = '';
+
+        const user = new User({
+          uid: 'zciuvz87zyv8hkzjhv',
+          username: 'janedoe',
+          email: 'jane@doe.com',
+          createdAt: new Date()
+        });
+        user.save(function(err, user) {
+          if (err) {
+            console.log(err);
+          } else {
+            userId = user._id;
+            // console.log('user ', user);
+            const post = new Post({
+              user: userId,
+              title: 'qwerty',
+              content: 'asdfghjkl zxcv bnm',
+              createdAt: new Date()
+            });
+            post.save(function(err, post) {
+              if (err) {
+                console.log(err);
+              } else {
+                postId = post._id;
+                // console.log('post ', post);
+                // console.log('postId: ', postId);
+                let id;
+                chai.request(server)
+                  .get(`/api/board/post/${id}`)
+                  .end((err, result) => {
+                    if (err) {
+                      console.log('error');
+                    } else {
+                      // console.log('result.body ', result.body);
+                      result.body.success.should.equal(false);
+                      result.body.should.have.property('error');
+                    }
+                  });
+              }
+            });
+          }
+        });
+        done();
       });
+
+      it('should return post and success = true if input id is correct', function(done) {
+
+        let userId = '';
+        let postId = '';
+
+        const user = new User({
+          uid: 'zciuvz87zyv8hkzjhv',
+          username: 'janedoe',
+          email: 'jane@doe.com',
+          createdAt: new Date()
+        });
+        user.save(function(err, user) {
+          if (err) {
+            console.log(err);
+          } else {
+            userId = user._id;
+            // console.log('user ', user);
+            const post = new Post({
+              user: userId,
+              title: 'qwerty',
+              content: 'asdfghjkl zxcv bnm',
+              createdAt: new Date()
+            });
+            post.save(function(err, post) {
+              if (err) {
+                console.log(err);
+              } else {
+                postId = post._id;
+                // console.log('post ', post);
+                // console.log('postId: ', postId);
+                let id = postId;
+                chai.request(server)
+                  .get(`/api/board/post/${id}`)
+                  .end((err, result) => {
+                    if (err) {
+                      console.log('error');
+                    } else {
+                      // console.log('result.body ', result.body);
+                      result.body.success.should.equal(true);
+                      result.body.should.have.property('post');
+                    }
+                  });
+              }
+            });
+          }
+        });
+        done();
+      });
+
+    });
+
+    describe('POST /api/board/posts', function() {
+
+      it('should return error if userId or title or content is/are empty', function() {
+        
+      });
+
 
     });
 

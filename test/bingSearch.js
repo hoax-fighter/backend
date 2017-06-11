@@ -21,9 +21,9 @@ describe('Bing', () => {
                     result.body.record.should.be.a('array')
                     result.body.record.length.should.equal(15)
                     result.body.success.should.equal(true)
-                    done()
                 })
         })
+        done()
     }))
 
     it('should post to search word in news', (done => {
@@ -39,9 +39,9 @@ describe('Bing', () => {
                     result.body.record.should.be.a('array')
                     result.body.record.length.should.equal(15)
                     result.body.success.should.equal(true)
-                    done()
                 })
         })
+        done()
     }))
 
 })
