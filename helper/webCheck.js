@@ -11,8 +11,8 @@ const webCheck = (foundSources, reputableSources, nonReputableSources) => {
       source.isUrlReputable = false;
         reputableSources.map(reputable => {
             let pattern = new RegExp(reputable, "gi")
-            if (pattern.test(source.displayUrl)) {
-                // console.log('ketemu yang reputable', source.displayUrl, reputable)
+            if (pattern.test(source.url)) {
+                // console.log('ketemu yang reputable', source.url, reputable)
                 positiveValue += 1;
                 source.isUrlReputable = true;
             }
@@ -22,8 +22,8 @@ const webCheck = (foundSources, reputableSources, nonReputableSources) => {
     analyzedSources.map(source => {
         nonReputableSources.map(reputable => {
             let pattern = new RegExp(reputable, "gi")
-            if (pattern.test(source.displayUrl)) {
-                // console.log('ketemu yang nonReputable', source.displayUrl, reputable)
+            if (pattern.test(source.url)) {
+                // console.log('ketemu yang blacklist', source.url, reputable)
                 negativeValue += 1;
                 source.isUrlReputable = false;
             }
@@ -36,7 +36,7 @@ const webCheck = (foundSources, reputableSources, nonReputableSources) => {
     return {
       reputable: positiveValue,
       blacklist: negativeValue,
-      nonReputable: analyzedSources.length - positiveValue - negativeValue || 0,
+      nonReputable: analyzedSources.length - positiveValue - negativeValue,
       sources: analyzedSources
     };
 
