@@ -19,6 +19,6 @@ let postSchema = new Schema({
   votes: [Vote]
 });
 
-const Post = mongoose.model('Source', postSchema);
+const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;
