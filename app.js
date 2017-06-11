@@ -36,11 +36,12 @@ app.use(cors());
 // routes
 const source = require('./routes/source');
 const checker = require('./routes/checker');
+const board = require('./routes/board');
 
 // use the route
 app.use('/api/source', source);
 app.use('/api/check', checker);
-
+app.use('/api/board', board);
 
 app.listen(app.get('port'), () => {
   console.log(`app listening on ${app.get('port')}`);
