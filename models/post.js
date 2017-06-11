@@ -7,6 +7,9 @@ let postSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  createdAt: {
+    type: Date
+  },
   title: {
     type: String
   },
