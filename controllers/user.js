@@ -25,7 +25,8 @@ methods.findById = (req, res, next) => {
 methods.create = (req, res, next) => {
   User.create({
     username: req.body.username,
-    email: req.body.email
+    email: req.body.email,
+    createdAt: new Date()
   }, (err, user) => {
     if (err) {
       res.json({ error: err, success: false });

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let userSchema = new Schema({
-  UID: {
+  uid: {
     type: String
   },
   username: {
