@@ -109,6 +109,7 @@ methods.news = (req, res, next) => {
             obj.description = arr.description
             obj.provider = arr.provider[0].name
             obj.datePublished = arr.datePublished
+            obj.isUrlReputable = true
             arr1.push(obj)
 
             obj = {}
