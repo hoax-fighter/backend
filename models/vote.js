@@ -6,6 +6,9 @@ let voteSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  createdAt: {
+    type: Date
+  },
   value: {
     type: Number
   }
