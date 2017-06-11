@@ -13,7 +13,6 @@ router.post('/posts', Post.create);
 router.put('/post/:id', Post.update);
 router.delete('/post/:id', Post.delete);
 
-router.post('/post/:postId/vote', Post.addVote);
-router.put('/post/:postId/vote', Post.editVote);
+router.post('/post/:postId/vote', Post.vote);
 
 module.exports = router;
