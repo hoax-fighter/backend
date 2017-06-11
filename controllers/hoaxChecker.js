@@ -13,9 +13,8 @@ const hoaxCheck = (req, res, next) => {
 
     Source.find({}, (err, sources) => {
       if (err) {
-        res.json({status: 'error', error: err});
+        res.json({ status: 'error', error: err });
       } else {
-
         const input = req.body.input;
 
         result.status = 'success';
@@ -34,7 +33,7 @@ const hoaxCheck = (req, res, next) => {
           const simVal = similarity.averagedSimilarity(input, title).value;
           if (simVal >= 75) {
             const negation = negationCheck(input, title);
-            result.tbh.bestMatchTitles.push({source: source, similarity: simVal, negation: negation});
+            result.tbh.bestMatchTitles.push({ source: source, similarity: simVal, negation: negation });
           }
         });
 
@@ -45,7 +44,7 @@ const hoaxCheck = (req, res, next) => {
           content.replace('MISINFORMASI: ', '');
           const simVal = similarity.averagedSimilarity(input, content).value;
           if (simVal >= 70) {
-            result.tbh.bestMatchContents.push({source: source, similarity: simVal});
+            result.tbh.bestMatchContents.push({ source: source, similarity: simVal });
           }
         });
 
@@ -59,7 +58,7 @@ const hoaxCheck = (req, res, next) => {
             const simVal = similarity.averagedSimilarity(input, trimmed).value;
             if (simVal >= 70) {
               const negation = negationCheck(input, sentence);
-              result.tbh.bestMatchSentences.push({source: source, similarity: simVal, negation: negation});
+              result.tbh.bestMatchSentences.push({ source: source, similarity: simVal, negation: negation });
             }
           });
         });
@@ -102,14 +101,13 @@ const hoaxCheck = (req, res, next) => {
           });
 
         } else {
-
           // not found in tbh database, next steps
 
           //input hoax indications rules check
           result.indications = {};
           result.indications = rules.check(input);
 
-          axios.post('http://localhost:3002/api/source/news', {word: input})
+          axios.post('http://localhost:3002/api/source/news', { word: input })
             .then((response) => {
 
               if (response.data.record.length > 0) {
@@ -140,7 +138,7 @@ const hoaxCheck = (req, res, next) => {
 
               } else {
 
-                axios.post('http://localhost:3002/api/source/web', {word: input})
+                axios.post('http://localhost:3002/api/source/web', { word: input })
                   .then((response) => {
 
                     const foundSources = response.data.record;
@@ -161,10 +159,10 @@ const hoaxCheck = (req, res, next) => {
                           message = `${percentage} % hasil pencarian mengindikasikan Fakta`;
                           conclusion = `Kemungkinan fakta`;
                         } else if (percentage > 25) {
-                          message = `${100-percentage}% hasil pencarian mengindikasikan Hoax`;
+                          message = `${100 - percentage}% hasil pencarian mengindikasikan Hoax`;
                           conclusion = `Kemungkinan Hoax`;
                         } else {
-                          message = `${100-percentage}% hasil pencarian mengindikasikan Hoax`;
+                          message = `${100 - percentage}% hasil pencarian mengindikasikan Hoax`;
                           conclusion = `Kemungkinan Besar Hoax`;
                         }
 
