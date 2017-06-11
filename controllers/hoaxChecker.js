@@ -1,7 +1,5 @@
 const axios = require('axios');
 const Source = require('../models/source');
-// const newsSearch = require('../controllers/source').news;
-// const webSearch = require('../controllers/source').web;
 const similarity = require('../helper/similarityCheck');
 const rules = require('../helper/hoaxRulesCheck');
 const negationCheck = require('../helper/negationCheck');
@@ -58,14 +56,12 @@ const hoaxCheck = (req, res, next) => {
             trimmed.replace('FITNAH: ', '');
             trimmed.replace('MISINFORMASI: ', '');
             const simVal = similarity.averagedSimilarity(input, trimmed).value;
-            if (simVal >= 75) {
+            if (simVal >= 70) {
               const negation = negationCheck(input, sentence);
               result.tbh.bestMatchSentences.push({ source: source, similarity: simVal, negation: negation });
             }
           });
         });
-
-        // console.log(result.tbh);
 
         if (result.tbh.bestMatchContents.length > 0 || result.tbh.bestMatchSentences.length > 0) {
 
@@ -98,6 +94,7 @@ const hoaxCheck = (req, res, next) => {
 
           res.send({
             success: true,
+            message: 'found in turnbackhoax.id',
             maxSimVal: maxSimVal,
             sources: relatedEntries,
             conclusion: conclusion
@@ -133,6 +130,7 @@ const hoaxCheck = (req, res, next) => {
 
                 res.send({
                   success: true,
+                  message: 'found in bingSearch news',
                   maxSimVal: maxSimVal,
                   conclusion: conclusion,
                   sources: response.data.record,
@@ -140,14 +138,55 @@ const hoaxCheck = (req, res, next) => {
 
               } else {
 
-                axios.post('http://localhost:3000/api/source/web', { word: input })
+                axios.post('http://localhost:3002/api/source/web', { word: input })
                   .then((response) => {
 
-                    res.send({
-                      success: true,
-                      conclusion: 'Kemungkinan Besar Hoax',
-                      sources: response.data
-                    });
+                    const foundSources = response.data.record;
+
+                    axios.get('http://localhost:3002/api/source/news-source')
+                      .then((response) => {
+
+                        const shortListedSources = response.data.sources[0];
+
+                        let analyzedSources = webCheck(foundSources, shortListedSources.reputable, shortListedSources.nonReputable);
+
+                        const percentage = (Math.round((analyzedSources.reputable / analyzedSources.sources.length) * 100) / 100) * 100;
+
+                        let conclusion = '';
+                        let message = '';
+
+                        if (percentage > 50) {
+                          message = `${percentage} % hasil pencarian mengindikasikan Fakta`;
+                          conclusion = `Kemungkinan akta`;
+                        } else if (percentage > 25) {
+                          message = `${100 - percentage}% hasil pencarian mengindikasikan Hoax`;
+                          conclusion = `Kemungkinan Hoax`;
+                        } else {
+                          message = `${100 - percentage}% hasil pencarian mengindikasikan Hoax`;
+                          conclusion = `Kemungkinan Besar Hoax`;
+                        }
+
+                        res.send({
+                          success: true,
+                          percentage: percentage,
+                          message: message,
+                          conclusion: conclusion,
+                          information: {
+                            reputable: analyzedSources.reputable,
+                            blacklist: analyzedSources.blacklist,
+                            nonReputable: analyzedSources.nonReputable
+                          },
+                          sources: analyzedSources.sources
+                        });
+
+                      })
+                      .catch((err) => {
+                        res.json({
+                          success: false,
+                          error: err,
+                          message: 'Narik News-Source List Gagal'
+                        })
+                      });
 
                   })
                   .catch((err) => {

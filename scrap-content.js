@@ -151,7 +151,7 @@ methods.seedData = () => {
             // console.log(source[0]);
             // console.log(source[0].hoax);
             // console.log(source[0].fakta);
-            axios.post('http://localhost:3000/api/source', {
+            axios.post('http://localhost:3002/api/source', {
                 title: source[0].title,
                 hoax: source[0].hoax,
                 fact: source[0].fact,

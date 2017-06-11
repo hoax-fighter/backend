@@ -1,42 +1,45 @@
-const webCheck = (webData, reputableSources, notReputableSources) => {
+const webCheck = (foundSources, reputableSources, nonReputableSources) => {
 
     let positiveValue = 0
     let negativeValue = 0
 
-    // console.log(webData) // data web
+    let analyzedSources = foundSources;
 
-    webData.map(web => {
-        console.log('web', web.displayUrl)
-        reputables.map(url => {
-            console.log('url', url)
-            let pattern = new RegExp(url, "gi")
-            if (pattern.test(web.displayUrl)) {
-                console.log('ketemu yang sama', web.displayUrl, url)
-                positiveValue += 1
+    // console.log(analyzedSources);
+
+    analyzedSources.map(source => {
+      source.isUrlReputable = false;
+        reputableSources.map(reputable => {
+            let pattern = new RegExp(reputable, "gi")
+            if (pattern.test(source.url)) {
+                // console.log('ketemu yang reputable', source.url, reputable)
+                positiveValue += 1;
+                source.isUrlReputable = true;
             }
         })
     })
 
-    webData.map(web => {
-        console.log('web', web.displayUrl)
-        notReputableSources.map(url => {
-            console.log('url', url)
-            let pattern = new RegExp(url, "gi")
-            if (pattern.test(web.displayUrl)) {
-                console.log('ketemu yang sama', web.displayUrl, url)
-                negativeValue += 1
+    analyzedSources.map(source => {
+        nonReputableSources.map(reputable => {
+            let pattern = new RegExp(reputable, "gi")
+            if (pattern.test(source.url)) {
+                // console.log('ketemu yang blacklist', source.url, reputable)
+                negativeValue += 1;
+                source.isUrlReputable = false;
             }
         })
     })
 
-    console.log('ketemu positip', positiveValue);
-    console.log('ketemu negatip', negativeValue);
+    // console.log('ketemu positip', positiveValue);
+    // console.log('ketemu negatip', negativeValue);
 
     return {
       reputable: positiveValue,
-      notReputable: negativeValue
+      blacklist: negativeValue,
+      nonReputable: analyzedSources.length - positiveValue - negativeValue,
+      sources: analyzedSources
     };
-    
+
 }
 
 module.exports = webCheck

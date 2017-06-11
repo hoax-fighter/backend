@@ -18,7 +18,6 @@ methods.gets = (req, res, next) => {
 }
 
 methods.create = (req, res, next) => {
-  console.log(req.body.source)
   Source.create({
     title: req.body.title,
     hoax: req.body.hoax,
@@ -46,10 +45,29 @@ methods.web = (req, res, next) => {
       })
     } else {
       // webCheck(body.webPages.value)
+
+      let obj = {}
+      let arr1 = []
+      body.webPages.value.map(function (arr) {
+        var hasil = similarityCheck.averagedSimilarity(arr.name, req.body.word)
+        if (hasil.status == 'success') {
+          obj.hasil = hasil.value
+        }
+        obj.id = arr.id;
+        obj.provider = arr.displayUrl;
+        obj.name = arr.name;
+        obj.bingUrl = arr.url;
+        obj.dateLastCrawled = arr.dateLastCrawled;
+        obj.url = arr.displayUrl;
+        obj.description = arr.snippet;
+        arr1.push(obj)
+
+        obj = {}
+      })
+
       res.json({
-        error: null,
         success: true,
-        record: body.webPages.value,
+        record: arr1,
         message: 'Cari Web Berhasil'
       })
     }
@@ -107,8 +125,6 @@ methods.news = (req, res, next) => {
     });
 }
 
-module.exports = methods;
-
 methods.delete = (req, res, next) => {
   Source.remove({}, function (err) {
     res.json({ status: 'success', message: 'database is now empty' });
@@ -116,4 +132,3 @@ methods.delete = (req, res, next) => {
 }
 
 module.exports = methods;
-
