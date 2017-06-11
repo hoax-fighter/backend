@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Vote = require('./vote');
+const voteSchema = require('./vote');
 let Schema = mongoose.Schema;
 
 let postSchema = new Schema({
@@ -16,7 +16,13 @@ let postSchema = new Schema({
   content: {
     type: String
   },
-  votes: [Vote]
+  votes: [voteSchema],
+  hoaxVoteCount: {
+    type: Number
+  },
+  nonHoaxVoteCount: {
+    type: Number
+  }
 });
 
 const Post = mongoose.model('Post', postSchema);
