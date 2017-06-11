@@ -42,8 +42,8 @@ methods.update = (req, res, next) => {
       res.json({ error: err, success: false });
     } else {
       User.update({_id: id}, {$set: {
-        username: user.username || req.body.username,
-        email: user.email || req.body.email
+        username: req.body.username || user.username,
+        email: req.body.email || user.email 
       }}, (err, updated) => {
         res.json({ user: user, success: true });
       });
