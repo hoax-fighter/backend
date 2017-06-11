@@ -15,13 +15,13 @@ methods.getAll = (req, res, next) => {
 }
 
 methods.findById = (req, res, next) => {
-  console.log('in controller, req.params.id: ', req.params.id);
+  // console.log('in controller, req.params.id: ', req.params.id);
   if (req.params.id) {
     if (req.params.id.length > 0) {
       Post.findById(req.params.id)
         .populate(['user', 'votes'])
         .exec(function(err, post) {
-          console.log('in controller, found post: ', post);
+          // console.log('in controller, found post: ', post);
           if(err) {
             res.json({error: err, success: false});
           } else {
