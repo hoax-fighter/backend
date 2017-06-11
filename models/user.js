@@ -5,7 +5,7 @@ let userSchema = new Schema({
   uid: {
     type: String
   },
-  username: {
+  name: {
     type: String
   },
   email: {
