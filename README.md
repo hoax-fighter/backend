@@ -55,7 +55,7 @@ Route | HTTP | Description
 
 **request body**
 ```javascript
-userId: 'user id here'
+userId: 'user id (from mongoose) here'
 value: 'insert number here (1 or -1)'
 name: 'title'
 description: 'description'
