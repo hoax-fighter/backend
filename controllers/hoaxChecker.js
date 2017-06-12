@@ -89,7 +89,7 @@ const hoaxCheck = (req, res, next) => {
           if (relatedEntries.length > 0) {
             conclusion = "Kemungkinan Besar Hoax";
           } else {
-            conclusion = "Kemungkinan Bukan Hoax";
+            conclusion = "Tidak Dapat Disimpulkan";
           }
 
           res.send({
@@ -157,7 +157,11 @@ const hoaxCheck = (req, res, next) => {
 
                         if (percentage > 50) {
                           message = `${percentage} % hasil pencarian mengindikasikan Fakta`;
+<<<<<<< HEAD
                           conclusion = `Kemungkinan fakta`;
+=======
+                          conclusion = `Kemungkinan Fakta`;
+>>>>>>> 77591f357fbc678f6da2e08a6b5b61fa66cbb6cb
                         } else if (percentage > 25) {
                           message = `${100 - percentage}% hasil pencarian mengindikasikan Hoax`;
                           conclusion = `Kemungkinan Hoax`;

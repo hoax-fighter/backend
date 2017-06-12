@@ -2,18 +2,17 @@ const mongoose = require('mongoose');
 const voteSchema = require('./vote');
 let Schema = mongoose.Schema;
 
-let postSchema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  },
+let feedbackSchema = new Schema({
   createdAt: {
     type: Date
   },
-  title: {
+  name: {
     type: String
   },
-  content: {
+  description: {
+    type: String
+  },
+  url: {
     type: String
   },
   votes: [voteSchema],
@@ -25,6 +24,6 @@ let postSchema = new Schema({
   }
 });
 
-const Post = mongoose.model('Post', postSchema);
+const Feedback = mongoose.model('Feedback', feedbackSchema);
 
-module.exports = Post;
+module.exports = Feedback;

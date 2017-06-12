@@ -20,7 +20,7 @@ describe('User API', function() {
         if (err) {
           console.log(err);
         } else {
-          console.log(user);
+          // console.log(user);
         }
       });
       done();
@@ -44,7 +44,7 @@ describe('User API', function() {
             if (err) {
               console.log(err);
             } else {
-              console.log(result.body);
+              // console.log(result.body);
               result.body.users.length.should.equal(1);
             }
           });
