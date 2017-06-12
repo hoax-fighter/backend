@@ -86,6 +86,7 @@ const hoaxChecker = (req, res, next) => {
 
                       response.data.feedbacks.map((feedback) => {
                         relevantNews.map((source) => {
+                          source.isUrlReputable = true;
                           if (String(feedback.name) === String(source.name) && String(feedback.description) === String(source.description) ) {
                             source.feedback = feedback;
                           }
@@ -106,54 +107,76 @@ const hoaxChecker = (req, res, next) => {
                   axios.post('http://localhost:3002/api/source/web', {word: input})
                     .then((response) => {
 
-                      let minSimVal = 60;
-                      let relevantWeb = [];
-                      response.data.record.map((news) => {
-                        if (Number(news.hasil) >= minSimVal) {
-                          relevantWeb.push(news);
-                        }
-                      });
+                      let searchResult = response.data.record;
+                      // console.log(searchResult);
 
-                      if (relevantWeb.length > 0) {
+                      // check the url reputation
+                      axios.get('http://localhost:3002/api/source/news-source')
+                        .then((response) => {
 
-                        // found relevant web entries
-                        // check the reputation of source url
-                        axios.get('http://3002/api/source/news-source')
-                          .then((response) => {
+                          const reputable = response.data.sources[0].reputable;
+                          const blacklist = response.data.sources[0].nonReputable;
 
-                            const reputable = response.data.sources[0].reputable;
-                            const blacklist = response.data.sources[0].nonReputable;
+                          let checkedWebSources = webCheck(searchResult, reputable, blacklist);
 
-                            let checkedWebSources = webCheck(relevantWeb, reputable, blacklist);
+                          // combine with user feedback
+                          axios.get('http://localhost:3002/api/source/feedback')
+                            .then((response) => {
 
-                            // combine the checked relevant web entries with feedback from users
-                            axios.get('http://localhost:3002/api/source/feedback')
-                              .then((response) => {
 
-                                response.data.feedbacks.map((feedback) => {
-                                  checkedWebSources.map((source) => {
-                                    if (String(feedback.name) === String(source.name) && String(feedback.description) === String(source.description) ) {
-                                      source.feedback = feedback;
-                                    }
-                                  });
+
+                              response.data.feedbacks.map((feedback) => {
+                                checkedWebSources.sources.map((source) => {
+                                  if (String(feedback.name) === String(source.name) && String(feedback.description) === String(source.description) ) {
+                                    source.feedback = feedback;
+                                  }
                                 });
-
-                                res.json({success: true, sources: checkedWebSources, indications: result.indications});
-
-                              })
-                              .catch((err) => {
-                                res.json({success: false, error: err});
                               });
 
-                          })
-                          .catch((err) => {
-                            res.json({success: false, error: err});
-                          });
+                              let minSimVal = 60;
+                              let relevantWeb = [];
+                              checkedWebSources.sources.map((news) => {
+                                if (Number(news.hasil) >= minSimVal) {
+                                  relevantWeb.push(news);
+                                }
+                              });
 
-                      } else {
-                        // no relevant entries on the web, cannot be concluded
-                        res.json({success: true, message: 'no relevant entry in the web'});
-                      }
+                              if (relevantWeb.length > 0) {
+
+                                // relevant web entry found
+                                res.json({message: 'fetch reputation list', sources: relevantWeb, indications: result.indications});
+
+                              } else {
+
+                                // relevant web entry not found
+                                res.json({
+                                  message: 'fetch reputation list',
+                                  sources: checkedWebSources.sources,
+                                  reputable: checkedWebSources.reputable,
+                                  blacklist: checkedWebSources.blacklist,
+                                  nonReputable: checkedWebSources.nonReputable,
+                                  indications: result.indications
+                                });
+
+                              }
+
+
+                            })
+                            .catch((err) => {
+                              console.log('error fetching user feedback');
+                              res.json({success: false, error: err});
+                            });
+
+
+                        })
+                        .catch((err) => {
+                          console.log('error fetching url list');
+                          res.json({success: false, error: err});
+                        });
+
+
+                      // res.json({message: 'searched the web', sources: searchResult});
+
 
                     })
                     .catch((err) => {
