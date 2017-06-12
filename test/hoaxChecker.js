@@ -62,9 +62,6 @@ describe('Hoax Checker API', function() {
         })
     });
 
-
-
-
   });
 
 });
