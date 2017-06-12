@@ -76,7 +76,9 @@ methods.web = (req, res, next) => {
 }
 
 methods.news = (req, res, next) => {
-  Bing.news(req.body.word, {
+  const input = String(req.body.word).replace(/[\"]/ig, '\"')
+  console.log(input);
+  Bing.news(String(input), {
     market: 'en-ID',
     count: 15
   },

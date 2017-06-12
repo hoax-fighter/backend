@@ -7,6 +7,7 @@ const rules = require('../helper/hoaxRulesCheck');
 const summarizer = require('../helper/summarizer');
 
 const hoaxChecker = (req, res, next) => {
+  console.log('in hoaxChecker2');
   if (req.body.input) {
     if (String(req.body.input).length > 0) {
 
@@ -16,7 +17,7 @@ const hoaxChecker = (req, res, next) => {
 
       // search the tbh database
       Source.find({}, (err, sources) => {
-
+        console.log('Fetching the tbh source');
         if (err) {
 
           console.log(err);
@@ -55,6 +56,7 @@ const hoaxChecker = (req, res, next) => {
 
           if (result.sources.length > 0) {
 
+            console.log('Found similar entry in tbh!');
             // hoax is found in tbh database, return the relevant entry
 
             const tbh = [];
@@ -75,7 +77,7 @@ const hoaxChecker = (req, res, next) => {
             });
 
           } else {
-
+            console.log('No similar entry in tbh, continue to check bing news!');
             // check for indications in input string
             result.indications = {};
             result.indications = rules.check(input);
@@ -83,7 +85,8 @@ const hoaxChecker = (req, res, next) => {
             // hoax is not found in tbh database, search the news
             axios.post('http://localhost:3002/api/source/news', {word: input})
               .then((response) => {
-
+                console.log('done fetching news!');
+                console.log(response.data);
                 let minSimVal = 60;
                 let relevantNews = [];
                 response.data.record.map((news) => {
@@ -93,6 +96,7 @@ const hoaxChecker = (req, res, next) => {
                 });
 
                 if (relevantNews.length > 0) {
+                  console.log('Found relevant news search result!');
 
                   // relevant news from reputable sources are found
                   result.sources = relevantNews;
@@ -100,7 +104,7 @@ const hoaxChecker = (req, res, next) => {
                   // combine the relevant news with feedback from users
                   axios.get('http://localhost:3002/api/source/feedback')
                     .then((response) => {
-
+                      console.log('user feedback has been fetched!');
                       response.data.feedbacks.map((feedback) => {
                         relevantNews.map((source) => {
                           source.isUrlReputable = true;
@@ -117,6 +121,7 @@ const hoaxChecker = (req, res, next) => {
 
                     })
                     .catch((err) => {
+                      console.log('error combining news with feedback');
                       res.json({success: false, error: err});
                     });
 
@@ -185,7 +190,7 @@ const hoaxChecker = (req, res, next) => {
 
                             })
                             .catch((err) => {
-                              console.log('error fetching user feedback');
+                              console.log('error combining web search with feedback');
                               res.json({success: false, error: err});
                             });
 
