@@ -4,6 +4,7 @@ const similarityCheck = require('../helper/similarityCheck');
 const negationCheck = require('../helper/negationCheck');
 const webCheck = require('../helper/webCheck');
 const rules = require('../helper/hoaxRulesCheck');
+const summarizer = require('../helper/summarizer');
 
 const hoaxChecker = (req, res, next) => {
   if (req.body.input) {
@@ -54,8 +55,24 @@ const hoaxChecker = (req, res, next) => {
 
           if (result.sources.length > 0) {
 
-            // hoax is found in tbh database, send the relevant entry
-            res.json({sucess: true, sources: result.sources});
+            // hoax is found in tbh database, return the relevant entry
+
+            const tbh = [];
+
+            result.sources.map((source) => {
+              let item = {
+                name: source.source.title,
+                description: source.source.hoax,
+                similarity: source.similarity,
+                negation: source.negation
+              };
+              tbh.push(item);
+            });
+
+            res.json({
+              success: true,
+              sources: tbh
+            });
 
           } else {
 
@@ -93,7 +110,10 @@ const hoaxChecker = (req, res, next) => {
                         });
                       });
 
-                      res.json({success: true, sources: relevantNews, indications: result.indications});
+                      let final = {success: true, sources: relevantNews, indications: result.indications};
+                      final.result = summarizer(final);
+
+                      res.json(final);
 
                     })
                     .catch((err) => {
@@ -123,8 +143,6 @@ const hoaxChecker = (req, res, next) => {
                           axios.get('http://localhost:3002/api/source/feedback')
                             .then((response) => {
 
-
-
                               response.data.feedbacks.map((feedback) => {
                                 checkedWebSources.sources.map((source) => {
                                   if (String(feedback.name) === String(source.name) && String(feedback.description) === String(source.description) ) {
@@ -144,19 +162,23 @@ const hoaxChecker = (req, res, next) => {
                               if (relevantWeb.length > 0) {
 
                                 // relevant web entry found
-                                res.json({message: 'fetch reputation list', sources: relevantWeb, indications: result.indications});
+                                res.json({success: true, sources: relevantWeb, indications: result.indications});
 
                               } else {
 
                                 // relevant web entry not found
-                                res.json({
-                                  message: 'fetch reputation list',
+                                let final = {
+                                  success: true,
                                   sources: checkedWebSources.sources,
                                   reputable: checkedWebSources.reputable,
                                   blacklist: checkedWebSources.blacklist,
                                   nonReputable: checkedWebSources.nonReputable,
                                   indications: result.indications
-                                });
+                                };
+
+                                final.result = summarizer(final);
+
+                                res.json(final);
 
                               }
 
