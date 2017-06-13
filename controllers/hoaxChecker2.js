@@ -55,6 +55,8 @@ const hoaxChecker = (req, res, next) => {
               } else if (sources) {
                 result.sources = [];
 
+                console.log(sources);
+
                 // check for the content as whole
                 sources.map((source) => {
                   let content = source.hoax.replace('HOAX: ', '');
@@ -115,12 +117,14 @@ const hoaxChecker = (req, res, next) => {
 
                   const tbh = [];
 
+
                   result.sources.map((source) => {
                     let item = {
                       name: source.source.title,
                       description: source.source.hoax,
                       similarity: source.similarity,
-                      negation: source.negation
+                      negation: source.negation,
+                      url: source.source.url
                     };
                     tbh.push(item);
                   });
