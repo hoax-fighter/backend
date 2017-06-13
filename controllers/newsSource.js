@@ -2,11 +2,6 @@ const NewsSource = require('../models/newsSource');
 const methods = {};
 
 methods.create = (req, res, next) => {
-  // NewsSource.find({}, (err, source) => {
-  //   NewsSource.update({$set: {reputable: [...source.reputable, req.body.reputable],
-  //     nonReputable: [...source.nonReputable, req.body.nonReputable]}})
-  // })
-
   NewsSource.create({
     reputable: req.body.reputable,
     nonReputable: req.body.nonReputable
