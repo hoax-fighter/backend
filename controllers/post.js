@@ -5,11 +5,11 @@ const methods = {};
 methods.getAll = (req, res, next) => {
   Post.find({})
     .populate(['user', 'votes'])
-    .exec(function(err, posts) {
-      if(err) {
-        res.json({error: err, success: false});
+    .exec(function (err, posts) {
+      if (err) {
+        res.json({ error: err, success: false });
       } else {
-        res.json({posts: posts, success: true});
+        res.json({ posts: posts, success: true });
       }
     });
 }
@@ -20,19 +20,19 @@ methods.findById = (req, res, next) => {
     if (req.params.id.length > 0) {
       Post.findById(req.params.id)
         .populate(['user', 'votes'])
-        .exec(function(err, post) {
+        .exec(function (err, post) {
           // console.log('in controller, found post: ', post);
-          if(err) {
-            res.json({error: err, success: false});
+          if (err) {
+            res.json({ error: err, success: false });
           } else {
-            res.json({post: post, success: true});
+            res.json({ post: post, success: true });
           }
         });
     } else {
-      res.json({success: false, message: 'Post id tidak boleh kosong!'});
+      res.json({ success: false, message: 'Post id tidak boleh kosong!' });
     }
   } else {
-    res.json({success: false, message: 'Post id tidak boleh kosong!'});
+    res.json({ success: false, message: 'Post id tidak boleh kosong!' });
   }
 }
 
@@ -69,14 +69,16 @@ methods.update = (req, res, next) => {
         res.json({ error: err, success: false });
       } else {
         if (post && post !== null) {
-          Post.update({_id: id}, {$set: {
-            user: post.user,
-            title: req.body.title || post.title,
-            content: req.body.content || post.content,
-            votes: post.votes,
-            hoaxVoteCount: post.hoaxVoteCount,
-            nonHoaxVoteCount: post.nonHoaxVoteCount
-          }}, (err, updated) => {
+          Post.update({ _id: req.params.id }, {
+            $set: {
+              user: post.user,
+              title: req.body.title || post.title,
+              content: req.body.content || post.content,
+              votes: post.votes,
+              hoaxVoteCount: post.hoaxVoteCount,
+              nonHoaxVoteCount: post.nonHoaxVoteCount
+            }
+          }, (err, updated) => {
             res.json({ post: post, success: true });
           });
         } else {
@@ -91,11 +93,12 @@ methods.update = (req, res, next) => {
 }
 
 methods.delete = (req, res, next) => {
-  Post.remove({_id:req.params.id}, (err) => {
+
+  Post.remove({ _id: req.params.id }, (err) => {
     if (err) {
-      res.json({success: false, error: err});
+      res.json({ success: false, error: err });
     } else {
-      res.json({success: true, message: 'post is successfully deleted'});
+      res.json({ success: true, message: 'post is successfully deleted' });
     }
   });
 }
@@ -117,7 +120,7 @@ methods.vote = (req, res, next) => {
           let foundVote = null;
           let foundIndex = null;
           post.votes.map((vote, index) => {
-            if(String(vote.user) === String(req.body.userId)) {
+            if (String(vote.user) === String(req.body.userId)) {
               foundVote = vote;
               foundIndex = index;
             }
@@ -132,17 +135,17 @@ methods.vote = (req, res, next) => {
               // console.log('original post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
               // console.log('original vote value: ', post.votes[foundIndex].value);
               if (Number(post.votes[foundIndex].value) === 1) {
-                post.hoaxVoteCount --;
+                post.hoaxVoteCount--;
                 post.votes[foundIndex].value = 0;
               } else if (Number(post.votes[foundIndex].value) === -1) {
-                post.nonHoaxVoteCount --;
+                post.nonHoaxVoteCount--;
                 post.votes[foundIndex].value = 0;
               } else {
                 if (Number(req.body.value) === 1) {
-                  post.hoaxVoteCount ++;
+                  post.hoaxVoteCount++;
                   post.votes[foundIndex].value = req.body.value;
                 } else {
-                  post.nonHoaxVoteCount ++;
+                  post.nonHoaxVoteCount++;
                   post.votes[foundIndex].value = req.body.value;
                 }
               }
@@ -169,9 +172,9 @@ methods.vote = (req, res, next) => {
 
           } else {
             if (Number(req.body.value) === 1) {
-              post.hoaxVoteCount ++;
+              post.hoaxVoteCount++;
             } else {
-              post.nonHoaxVoteCount ++;
+              post.nonHoaxVoteCount++;
             }
             post.votes.push({
               user: req.body.userId,

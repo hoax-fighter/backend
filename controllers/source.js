@@ -1,5 +1,3 @@
-// key 1 : ee345000549e429db28e3380268d2660
-// key 2 : 883fb052a88c4dae89a5da2c78de84b9
 var Bing = require('node-bing-api')({ accKey: "903b2ff8e1e94edfa0db68e9d5d8a6aa" });
 
 const Source = require('../models/source');

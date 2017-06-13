@@ -87,7 +87,7 @@ methods.averagedSimilarity = (str1, str2) => {
   const sd = methods.sorensendice(str1, str2);
   if (jw.status === 'success' && lv.status === 'success' && sd.status === 'success') {
     result.status = 'success';
-    result.value = (Math.round( ((jw.value + lv.value + sd.value)/3) * 100) /100 );
+    result.value = (Math.round(((jw.value + lv.value + sd.value) / 3) * 100) / 100);
     return result;
   } else if (jw.status === 'error') {
     return jw;
