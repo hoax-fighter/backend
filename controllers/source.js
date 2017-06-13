@@ -36,7 +36,7 @@ methods.web = (req, res, next) => {
   const input = String(req.body.word);
   Bing.web(input, {
     market: 'en-ID',
-    count: 25,
+    count: 15,
   }, function (error, result, body) {
     if (error) {
       res.json({
@@ -98,7 +98,6 @@ methods.web = (req, res, next) => {
 
       }
 
-
     }
 
   });
@@ -109,7 +108,7 @@ methods.news = (req, res, next) => {
   const input = String(req.body.word);
   Bing.news(String(input), {
     market: 'en-ID',
-    count: 25
+    count: 15
   },
     function (error, result, body) {
 
@@ -139,7 +138,7 @@ methods.news = (req, res, next) => {
 
             const parsedInput = input.split('. ');
             if (parsedInput.length > 1) {
-              const sentences = obj.description.split('. ');
+              const sentences = obj.description.split('.');
               sentences.map((sentence) => {
                 parsedInput.map((item) => {
                   const similarity = similarityCheck.averagedSimilarity(item, sentence);
