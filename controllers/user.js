@@ -13,7 +13,13 @@ methods.getAll = (req, res, next) => {
 }
 
 methods.findUser = (req, res, next) => {
+<<<<<<< HEAD
   User.findOne({email: req.params.email}, (err, users) => {
+=======
+  User.findOne({
+    email: req.params.email
+  }, (err, users) => {
+>>>>>>> cdebe453e59be04bf695839d3883e9227f431c8c
     if (err) {
       res.json({ error: err, success: false });
     } else {
@@ -22,12 +28,12 @@ methods.findUser = (req, res, next) => {
   });
 }
 
+
 methods.create = (req, res, next) => {
   User.create({
-    uid: req.body.uid,
-    name: req.body.username,
+    name: req.body.name,
     email: req.body.email,
-    createdAt: new Date().toISOString()
+    createdAt: new Date()
   }, (err, user) => {
     if (err) {
       res.json({ error: err, success: false });
@@ -45,7 +51,7 @@ methods.update = (req, res, next) => {
       User.update({ _id: id }, {
         $set: {
           uid: user.uid || req.body.uid,
-          name: user.username || req.body.name,
+          name: user.user || req.body.name,
           email: user.email || req.body.email
         }
       }, (err, updated) => {
