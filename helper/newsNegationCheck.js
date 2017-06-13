@@ -13,8 +13,6 @@ const stringNegationCheck = (string, negations) => {
     }
   });
 
-  // console.log(foundNegations);
-
   foundNegations.map((negation) => {
     stringWithoutNegation = string.replace(`${negation}`, '');
   });
@@ -49,6 +47,7 @@ const arrayNegationCheck = (array, negations) => {
 }
 
 const negationCheck = (string, hoax) => {
+  console.log('in news check for negations');
   let result = {};
   if (string && hoax) {
     if(typeof string === 'string' && typeof hoax === 'string') {
