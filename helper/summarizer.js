@@ -23,7 +23,7 @@
 
 const summarizer = (data) => {
 
-  console.log(data);
+  // console.log(data);
 
   const indication = 1;
   if (data.indications.summary) {
@@ -49,8 +49,8 @@ const summarizer = (data) => {
   });
 
   let acceptable = 0;
-  ratedSources.map((sources) => {
-    if (sources.acceptable) {
+  ratedSources.map((source) => {
+    if (source.acceptable) {
       acceptable ++;
     }
   });
@@ -62,6 +62,7 @@ const summarizer = (data) => {
   });
 
   let result = {};
+  console.log('acceptable: ', acceptable);
   const score = Math.floor(indication*15 + (acceptable/totalEntries)*85);
   if (score > 50) {
     result.remark = `${score}% hasil pencarian mengindikasikan Fakta`;
