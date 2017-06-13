@@ -1,4 +1,9 @@
+// input structure:
 // data = {
+//   posts: {
+//     hoaxVoteCount,
+//     nonHoaxVoteCount,
+//   },
 //   sources: {
 //     hasil,
 //     name,
@@ -17,5 +22,53 @@
 // }
 
 const summarizer = (data) => {
-  data.sources.map(());
+
+  console.log(data);
+
+  const indication = 1;
+  if (data.indications.summary) {
+    indication = 0;
+  }
+
+  const totalEntries = data.sources.length + data.posts.length;
+  let acceptable = 0;
+  data.sources.map((source) => {
+    if (source.isUrlReputable) {
+      if (source.feedback) {
+        if (source.feedback.nonHoaxVoteCount >= source.feedback.hoaxVoteCount) {
+          acceptable ++;
+        }
+      } else {
+        acceptable ++;
+      }
+    }
+  });
+  data.posts.map((post) => {
+    if (post.nonHoaxVoteCount >= post.hoaxVoteCount) {
+      acceptable ++;
+    } else {
+      acceptable ++;
+    }
+  });
+
+  let result = {};
+  const score = Math.floor(indication*15 + (acceptable/totalEntries)*85);
+  if (score > 50) {
+    result.remark = `${score}% hasil pencarian mengindikasikan Fakta`;
+    if (score > 85) {
+      result.conclusion = `Kemungkinan Besar Fakta`;
+    } else {
+      result.conclusion = `Kemungkinan Fakta`;
+    }
+  } else {
+    result.remark = `${100-score}% hasil pencarian mengindikasikan Hoax`;
+    if (100-score > 85) {
+      result.conclusion = `Kemungkinan Besar Hoax`;
+    } else {
+      result.conclusion = `Kemungkinan Hoax`;
+    }
+  }
+  return result;
 }
+
+module.exports = summarizer;

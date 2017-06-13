@@ -1,4 +1,6 @@
-var Bing = require('node-bing-api')({ accKey: "883fb052a88c4dae89a5da2c78de84b9" });
+// key 1 : ee345000549e429db28e3380268d2660
+// key 2 : 883fb052a88c4dae89a5da2c78de84b9
+var Bing = require('node-bing-api')({ accKey: "903b2ff8e1e94edfa0db68e9d5d8a6aa" });
 
 const Source = require('../models/source');
 const methods = {};
@@ -33,9 +35,10 @@ methods.create = (req, res, next) => {
 }
 
 methods.web = (req, res, next) => {
-  Bing.web(req.body.word, {
+  const input = String(req.body.word);
+  Bing.web(input, {
     market: 'en-ID',
-    count: 15,
+    count: 25,
   }, function (error, result, body) {
     if (error) {
       res.json({
@@ -46,39 +49,69 @@ methods.web = (req, res, next) => {
     } else {
       // webCheck(body.webPages.value)
 
-      let obj = {}
-      let arr1 = []
-      body.webPages.value.map(function (arr) {
-        var hasil = similarityCheck.averagedSimilarity(arr.name, req.body.word)
-        if (hasil.status == 'success') {
-          obj.hasil = hasil.value
-        }
-        obj.id = arr.id;
-        obj.provider = arr.displayUrl;
-        obj.name = arr.name;
-        obj.bingUrl = arr.url;
-        obj.dateLastCrawled = arr.dateLastCrawled;
-        obj.url = arr.displayUrl;
-        obj.description = arr.snippet;
-        arr1.push(obj)
+      if (body.webPages) {
 
-        obj = {}
-      })
+        let obj = {}
+        let arr1 = []
+        body.webPages.value.map(function (arr) {
+          var hasil = similarityCheck.averagedSimilarity(arr.name, req.body.word)
+          if (hasil.status == 'success') {
+            obj.similarity = hasil.value
+          }
+          obj.id = arr.id;
+          obj.provider = arr.displayUrl;
+          obj.name = arr.name;
+          obj.bingUrl = arr.url;
+          obj.dateLastCrawled = arr.dateLastCrawled;
+          obj.url = arr.displayUrl;
+          obj.description = arr.snippet;
 
-      res.json({
-        success: true,
-        record: arr1,
-        message: 'Cari Web Berhasil'
-      })
+          const parsedInput = input.split('. ');
+          if (parsedInput.length > 1) {
+            const sentences = obj.description.split('. ');
+            sentences.map((sentence) => {
+              parsedInput.map((item) => {
+                const similarity = similarityCheck.averagedSimilarity(item, sentence);
+                if (similarity > obj.similarity) {
+                  obj.similarity = similarity;
+                }
+              });
+            });
+          }
+
+          arr1.push(obj)
+
+          obj = {}
+        })
+
+        res.json({
+          success: true,
+          record: arr1,
+          message: 'Cari Web Berhasil'
+        })
+
+      } else {
+
+        res.json({
+          success: true,
+          record: [],
+          message: 'No relevant entry is found from Bing web search'
+        })
+
+      }
+
+
     }
 
   });
 }
 
 methods.news = (req, res, next) => {
-  Bing.news(req.body.word, {
+  console.log('in news fetch controller');
+  const input = String(req.body.word);
+  Bing.news(String(input), {
     market: 'en-ID',
-    count: 15
+    count: 25
   },
     function (error, result, body) {
 
@@ -90,26 +123,35 @@ methods.news = (req, res, next) => {
         })
       } else {
 
-        if (body.value.length == 0) {
-          res.json({
-            record: [],
-            message: 'Kemungkinan Hoax'
-          })
-        } else {
+        let obj = {};
+        let arr1 = [];
 
-          let obj = {}
-          let arr1 = []
+        if (body.value) {
+
           body.value.map(function (arr) {
             var hasil = similarityCheck.averagedSimilarity(arr.name, req.body.word)
             if (hasil.status == 'success') {
-              obj.hasil = hasil.value
+              obj.similarity = hasil.value
             }
             obj.name = arr.name
             obj.url = arr.url
             obj.description = arr.description
             obj.provider = arr.provider[0].name
             obj.datePublished = arr.datePublished
-            obj.isUrlReputable = true
+
+            const parsedInput = input.split('. ');
+            if (parsedInput.length > 1) {
+              const sentences = obj.description.split('. ');
+              sentences.map((sentence) => {
+                parsedInput.map((item) => {
+                  const similarity = similarityCheck.averagedSimilarity(item, sentence);
+                  if (similarity > obj.similarity) {
+                    obj.similarity = similarity;
+                  }
+                });
+              });
+            }
+
             arr1.push(obj)
 
             obj = {}
@@ -119,8 +161,20 @@ methods.news = (req, res, next) => {
             success: true,
             record: arr1,
             message: 'Cari Berita Berhasil'
+          });
+
+        } else {
+
+          res.json({
+            success: true,
+            record: [],
+            message: 'No relevant entry is found from bing News search'
           })
+
         }
+
+
+
       }
 
     });
