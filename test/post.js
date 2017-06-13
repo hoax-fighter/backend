@@ -193,8 +193,18 @@ describe('Post API', function() {
 
     describe('POST /api/board/posts', function() {
 
-      it('should return error if userId or title or content is/are empty', function() {
-        
+      it('should return error if userId or title or content is/are empty', function(done) {
+        chai.request(server)
+          .get(`api/board/posts`)
+          // .send({userId: '', title: 'akjdshaksjd', content: 'askdhasdk'})
+          .end((err, result) => {
+            if(err) {
+              console.log(err);
+            } else {
+              console.log(result.body);
+            }
+          });
+        done();
       });
 
 

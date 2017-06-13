@@ -8,6 +8,11 @@ const webCheck = require('../helper/webCheck');
 const rules = require('../helper/hoaxRulesCheck');
 const summarizer = require('../helper/summarizer');
 
+const simValPost = 60;
+const simValTbh = 60;
+const simValNews = 60;
+const simValWeb = 60;
+
 const hoaxChecker = (req, res, next) => {
 
   if (req.body.input) {
@@ -37,7 +42,7 @@ const hoaxChecker = (req, res, next) => {
               }
               const maxSimVal = Math.max(Number(simValTitle), Number(simValSentence), Number(simValContent));
               post.similarity = maxSimVal;
-              if (maxSimVal > 50) {
+              if (maxSimVal > simValPost) {
                 relevantPosts.push(post);
               }
             });
@@ -99,7 +104,7 @@ const hoaxChecker = (req, res, next) => {
                       trimmed.replace('MISINFORMASI: ', '');
                       parsedInput.map((item) => {
                         const simVal = similarityCheck.averagedSimilarity(item, trimmed).value;
-                        if (simVal >= 60) {
+                        if (simVal >= simValTbh) {
                           const negation = negationCheck(input, sentence);
                           if (negation.isHoax) {
                             result.sources.push({ source: source, similarity: simVal, negation: negation });
@@ -150,13 +155,13 @@ const hoaxChecker = (req, res, next) => {
                     .then((response) => {
                       console.log('done fetching news.');
                       const newsSearchResult = response.data.record;
-                      let minSimVal = 50;
+                      let minSimVal = simValNews;
                       let relevantNews = [];
                       console.log('checking the news for relevance and negations..');
                       newsSearchResult.map((news) => {
-                        console.log('processing news');
+                        // console.log('processing news');
                         news.negation = newsNegationCheck(input, news.name);
-                        console.log(news.negation);
+                        // console.log(news.negation);
                         if (Number(news.similarity) >= minSimVal) {
                           relevantNews.push(news);
                         }
@@ -236,7 +241,7 @@ const hoaxChecker = (req, res, next) => {
                                       });
                                     });
 
-                                    let minSimVal = 50;
+                                    let minSimVal = simValWeb;
                                     let relevantWeb = [];
                                     checkedWebSources.sources.map((news) => {
                                       news.negation = newsNegationCheck(input, news.name);
