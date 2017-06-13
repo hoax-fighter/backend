@@ -148,7 +148,7 @@ const hoaxChecker = (req, res, next) => {
 
                         console.log('finished checking user feedback.');
 
-                        let final = {success: true, sources: newsSearchResult, indications: result.indications};
+                        let final = {success: true, sources: relevantNews, indications: result.indications};
                         console.log('summarizing result..');
                         final.result = summarizer(final);
 
