@@ -236,7 +236,7 @@ const hoaxChecker = (req, res, next) => {
                                       });
                                     });
 
-                                    let minSimVal = 50;
+                                    let minSimVal = 30;
                                     let relevantWeb = [];
                                     checkedWebSources.sources.map((news) => {
                                       news.negation = newsNegationCheck(input, news.name);

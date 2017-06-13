@@ -31,22 +31,32 @@ const summarizer = (data) => {
   }
 
   const totalEntries = data.sources.length + data.posts.length;
-  let acceptable = 0;
-  data.sources.map((source) => {
+  let ratedSources = data.sources;
+  ratedSources.map((source) => {
     if (source.isUrlReputable) {
-      if (source.feedback) {
-        if (source.feedback.nonHoaxVoteCount >= source.feedback.hoaxVoteCount) {
-          acceptable ++;
-        }
-      } else {
-        acceptable ++;
+      source.acceptable = true;
+    } else {
+      source.acceptable = false;
+    }
+  });
+
+  ratedSources.map((source) => {
+    if (source.feedback) {
+      if (source.feedback.nonHoaxVoteCount >= source.feedback.hoaxVoteCount) {
+        source.acceptable = true;
       }
     }
   });
+
+  let acceptable = 0;
+  ratedSources.map((sources) => {
+    if (sources.acceptable) {
+      acceptable ++;
+    }
+  });
+
   data.posts.map((post) => {
     if (post.nonHoaxVoteCount >= post.hoaxVoteCount) {
-      acceptable ++;
-    } else {
       acceptable ++;
     }
   });
