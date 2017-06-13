@@ -46,27 +46,21 @@ const summarizer = (data) => {
 
   let result = {};
   const score = Math.floor(indication*15 + (acceptable/totalEntries)*85);
-  if (score <= 15) {
-    result.remark = `Hasil pencarian tidak relevan`;
-    result.conclusion = `Tidak Dapat Disimpulkan`;
-  } else {
-    if (score > 50) {
-      result.remark = `${score}% hasil pencarian mengindikasikan Fakta`;
-      if (score > 85) {
-        result.conclusion = `Kemungkinan Besar Fakta`;
-      } else {
-        result.conclusion = `Kemungkinan Fakta`;
-      }
+  if (score > 50) {
+    result.remark = `${score}% hasil pencarian mengindikasikan Fakta`;
+    if (score > 85) {
+      result.conclusion = `Kemungkinan Besar Fakta`;
     } else {
-      result.remark = `${100-score}% hasil pencarian mengindikasikan Hoax`;
-      if (100-score > 85) {
-        result.conclusion = `Kemungkinan Besar Hoax`;
-      } else {
-        result.conclusion = `Kemungkinan Hoax`;
-      }
+      result.conclusion = `Kemungkinan Fakta`;
+    }
+  } else {
+    result.remark = `${100-score}% hasil pencarian mengindikasikan Hoax`;
+    if (100-score > 85) {
+      result.conclusion = `Kemungkinan Besar Hoax`;
+    } else {
+      result.conclusion = `Kemungkinan Hoax`;
     }
   }
-
   return result;
 }
 

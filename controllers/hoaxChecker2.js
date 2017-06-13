@@ -184,7 +184,7 @@ const hoaxChecker = (req, res, next) => {
                             let final = {
                               success: true,
                               posts: result.posts,
-                              sources: newsSearchResult,
+                              sources: relevantNews,
                               indications: result.indications
                             };
 
@@ -272,10 +272,14 @@ const hoaxChecker = (req, res, next) => {
                                         reputable: checkedWebSources.reputable,
                                         blacklist: checkedWebSources.blacklist,
                                         nonReputable: checkedWebSources.nonReputable,
-                                        indications: result.indications
+                                        indications: result.indications,
+                                        result: {
+                                          remark: `Pencarian tidak dapat menemukan hasil yang relevan`,
+                                          conclusion: `Tidak Dapat Disimpulkan`
+                                        }
                                       };
 
-                                      final.result = summarizer(final);
+                                      // final.result = summarizer(final);
 
                                       res.json(final);
 
