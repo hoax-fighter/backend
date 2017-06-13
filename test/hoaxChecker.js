@@ -33,12 +33,12 @@ describe('Hoax Checker API', function() {
 
 
     it('should return error if input is empty', function(done) {
-      chai.request(server).post('/api/check').end((err, result) => {
+      chai.request(server).post('/api/check').send({input: ''}).end((err, result) => {
         if (err) {
           console.log('error');
         } else {
-          result.body.status.should.equal('error');
-          result.body.message.should.equal('input must not be empty');
+          result.body.success.should.equal(false);
+          result.body.error.should.equal('input must not be empty');
         }
         done();
       })

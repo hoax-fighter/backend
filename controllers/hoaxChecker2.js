@@ -55,7 +55,7 @@ const hoaxChecker = (req, res, next) => {
               } else if (sources) {
                 result.sources = [];
 
-                console.log(sources);
+                // console.log(sources);
 
                 // check for the content as whole
                 sources.map((source) => {
@@ -153,7 +153,6 @@ const hoaxChecker = (req, res, next) => {
                       let minSimVal = 50;
                       let relevantNews = [];
                       console.log('checking the news for relevance and negations..');
-                      console.log();
                       newsSearchResult.map((news) => {
                         console.log('processing news');
                         news.negation = newsNegationCheck(input, news.name);
