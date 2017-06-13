@@ -5,11 +5,11 @@ const methods = {};
 methods.getAll = (req, res, next) => {
   Post.find({})
     .populate(['user', 'votes'])
-    .exec(function(err, posts) {
-      if(err) {
-        res.json({error: err, success: false});
+    .exec(function (err, posts) {
+      if (err) {
+        res.json({ error: err, success: false });
       } else {
-        res.json({posts: posts, success: true});
+        res.json({ posts: posts, success: true });
       }
     });
 }
@@ -20,19 +20,19 @@ methods.findById = (req, res, next) => {
     if (req.params.id.length > 0) {
       Post.findById(req.params.id)
         .populate(['user', 'votes'])
-        .exec(function(err, post) {
+        .exec(function (err, post) {
           // console.log('in controller, found post: ', post);
-          if(err) {
-            res.json({error: err, success: false});
+          if (err) {
+            res.json({ error: err, success: false });
           } else {
-            res.json({post: post, success: true});
+            res.json({ post: post, success: true });
           }
         });
     } else {
-      res.json({success: false, message: 'Post id tidak boleh kosong!'});
+      res.json({ success: false, message: 'Post id tidak boleh kosong!' });
     }
   } else {
-    res.json({success: false, message: 'Post id tidak boleh kosong!'});
+    res.json({ success: false, message: 'Post id tidak boleh kosong!' });
   }
 }
 
@@ -69,14 +69,16 @@ methods.update = (req, res, next) => {
         res.json({ error: err, success: false });
       } else {
         if (post && post !== null) {
-          Post.update({_id: id}, {$set: {
-            user: post.user,
-            title: req.body.title || post.title,
-            content: req.body.content || post.content,
-            votes: post.votes,
-            hoaxVoteCount: post.hoaxVoteCount,
-            nonHoaxVoteCount: post.nonHoaxVoteCount
-          }}, (err, updated) => {
+          Post.update({ _id: req.params.id }, {
+            $set: {
+              user: post.user,
+              title: req.body.title || post.title,
+              content: req.body.content || post.content,
+              votes: post.votes,
+              hoaxVoteCount: post.hoaxVoteCount,
+              nonHoaxVoteCount: post.nonHoaxVoteCount
+            }
+          }, (err, updated) => {
             res.json({ post: post, success: true });
           });
         } else {
@@ -91,87 +93,102 @@ methods.update = (req, res, next) => {
 }
 
 methods.delete = (req, res, next) => {
-  Post.remove({_id:req.params.id}, (err) => {
+
+  Post.remove({ _id: req.params.id }, (err) => {
     if (err) {
-      res.json({success: false, error: err});
+      res.json({ success: false, error: err });
     } else {
-      res.json({success: true, message: 'post is successfully deleted'});
+      res.json({ success: true, message: 'post is successfully deleted' });
     }
   });
 }
 
 methods.vote = (req, res, next) => {
+
   if (req.params.postId && req.body.userId && req.body.value) {
-    Post.findById(req.params.postId, (err, post) => {
-      if (err) {
-        res.json({ error: err, success: false });
-      } else {
 
-        let foundVote;
-        let foundIndex;
-        post.votes.map((vote, index) => {
-          if(String(vote.user) === String(req.body.userId)) {
-            foundVote = vote;
-            foundIndex = index;
-          }
-        });
+    Post.findById(req.params.postId)
+      .populate('user')
+      .exec((err, post) => {
 
-        if (foundVote) {
+        if (err) {
 
-          let message = '';
-
-          if (Number(req.body.value) !== Number(post.votes[foundIndex].value)) {
-            // console.log('original post.hoaxVoteCount: ', post.hoaxVoteCount);
-            // console.log('original post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
-            // console.log('original vote value: ', post.votes[foundIndex].value);
-            if (Number(post.votes[foundIndex].value) === 1) {
-              post.hoaxVoteCount --;
-              post.votes[foundIndex].value = 0;
-            } else if (Number(post.votes[foundIndex].value) === -1) {
-              post.nonHoaxVoteCount --;
-              post.votes[foundIndex].value = 0;
-            } else {
-              if (Number(req.body.value) === 1) {
-                post.hoaxVoteCount ++;
-                post.votes[foundIndex].value = req.body.value;
-              } else {
-                post.nonHoaxVoteCount ++;
-                post.votes[foundIndex].value = req.body.value;
-              }
-            }
-
-            message = 'Edit vote berhasil';
-
-            // console.log('updated vote value: ', post.votes[foundIndex].value);
-            // console.log('updated post.hoaxVoteCount: ', post.hoaxVoteCount);
-            // console.log('updated post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
-            // console.log('updated vote value: ', post.votes[foundIndex].value);
-
-            post.save((err, post) => {
-              res.json({ post: post, success: true, message: message });
-            });
-
-          } else {
-            res.json({ success: false, error: 'Tidak bisa vote lagi!' });
-          }
+          res.json({ error: err, success: false });
 
         } else {
-          if (Number(req.body.value) === 1) {
-            post.hoaxVoteCount ++;
+
+          let foundVote;
+          let foundIndex;
+          post.votes.map((vote, index) => {
+            if (String(vote.user) === String(req.body.userId)) {
+              foundVote = vote;
+              foundIndex = index;
+            }
+          });
+
+          if (foundVote) {
+
+            let message = '';
+
+            if (Number(req.body.value) !== Number(post.votes[foundIndex].value)) {
+              // console.log('original post.hoaxVoteCount: ', post.hoaxVoteCount);
+              // console.log('original post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
+              // console.log('original vote value: ', post.votes[foundIndex].value);
+              if (Number(post.votes[foundIndex].value) === 1) {
+                post.hoaxVoteCount--;
+                post.votes[foundIndex].value = 0;
+              } else if (Number(post.votes[foundIndex].value) === -1) {
+                post.nonHoaxVoteCount--;
+                post.votes[foundIndex].value = 0;
+              } else {
+                if (Number(req.body.value) === 1) {
+                  post.hoaxVoteCount++;
+                  post.votes[foundIndex].value = req.body.value;
+                } else {
+                  post.nonHoaxVoteCount++;
+                  post.votes[foundIndex].value = req.body.value;
+                }
+              }
+
+              message = 'Edit vote berhasil';
+
+              // console.log('updated vote value: ', post.votes[foundIndex].value);
+              // console.log('updated post.hoaxVoteCount: ', post.hoaxVoteCount);
+              // console.log('updated post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
+              // console.log('updated vote value: ', post.votes[foundIndex].value);
+
+              post.save((err, post) => {
+                if (err) {
+                  res.json({ success: false, error: err });
+                } else {
+                  res.json({ post: post, success: true, message: message });
+                }
+
+              });
+
+            } else {
+              res.json({ success: false, error: 'Tidak bisa vote lagi!' });
+            }
+
           } else {
-            post.nonHoaxVoteCount ++;
+            if (Number(req.body.value) === 1) {
+              post.hoaxVoteCount++;
+            } else {
+              post.nonHoaxVoteCount++;
+            }
+            post.votes.push({
+              user: req.body.userId,
+              value: req.body.value,
+              createdAt: new Date()
+            });
+            post.save((err, post) => {
+              res.json({ post: post, success: true });
+            });
           }
-          post.votes.push({
-            user: req.body.userId,
-            value: req.body.value,
-            createdAt: new Date()
-          });
-          post.save((err, post) => {
-            res.json({ post: post, success: true });
-          });
         }
-      }
-    });
+
+      });
+
   } else {
     res.json({ error: 'Id post, Id user, value vote tidak boleh kosong', success: false });
   }

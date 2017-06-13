@@ -8,7 +8,7 @@ const webCheck = (foundSources, reputableSources, nonReputableSources) => {
     // console.log(analyzedSources);
 
     analyzedSources.map(source => {
-      source.isUrlReputable = false;
+        source.isUrlReputable = false;
         reputableSources.map(reputable => {
             let pattern = new RegExp(reputable, "gi")
             if (pattern.test(source.url)) {
@@ -34,10 +34,10 @@ const webCheck = (foundSources, reputableSources, nonReputableSources) => {
     // console.log('ketemu negatip', negativeValue);
 
     return {
-      reputable: positiveValue,
-      blacklist: negativeValue,
-      nonReputable: analyzedSources.length - positiveValue - negativeValue,
-      sources: analyzedSources
+        reputable: positiveValue,
+        blacklist: negativeValue,
+        nonReputable: analyzedSources.length - positiveValue - negativeValue,
+        sources: analyzedSources
     };
 
 }

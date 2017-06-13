@@ -1,4 +1,4 @@
-var Bing = require('node-bing-api')({ accKey: "7cfeae3d1999482fb0c8fb6c8c7e77e4" });
+var Bing = require('node-bing-api')({ accKey: "883fb052a88c4dae89a5da2c78de84b9" });
 
 const Source = require('../models/source');
 const methods = {};

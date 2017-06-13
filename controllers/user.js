@@ -12,8 +12,10 @@ methods.getAll = (req, res, next) => {
   });
 }
 
-methods.findById = (req, res, next) => {
-  User.findById(req.params.id, (err, users) => {
+methods.findUser = (req, res, next) => {
+  User.findOne({
+    email: req.params.email
+  }, (err, users) => {
     if (err) {
       res.json({ error: err, success: false });
     } else {
@@ -22,12 +24,12 @@ methods.findById = (req, res, next) => {
   });
 }
 
+
 methods.create = (req, res, next) => {
   User.create({
-    uid: req.body.uid,
-    name: req.body.username,
+    name: req.body.name,
     email: req.body.email,
-    createdAt: new Date().toISOString()
+    createdAt: new Date()
   }, (err, user) => {
     if (err) {
       res.json({ error: err, success: false });
@@ -45,7 +47,7 @@ methods.update = (req, res, next) => {
       User.update({ _id: id }, {
         $set: {
           uid: user.uid || req.body.uid,
-          name: user.username || req.body.name,
+          name: user.user || req.body.name,
           email: user.email || req.body.email
         }
       }, (err, updated) => {

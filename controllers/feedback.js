@@ -5,11 +5,11 @@ const methods = {};
 methods.getAll = (req, res, next) => {
   Feedback.find({})
     .populate(['votes'])
-    .exec(function(err, feedbacks) {
-      if(err) {
-        res.json({error: err, success: false});
+    .exec(function (err, feedbacks) {
+      if (err) {
+        res.json({ error: err, success: false });
       } else {
-        res.json({feedbacks: feedbacks, success: true});
+        res.json({ feedbacks: feedbacks, success: true });
       }
     });
 }
@@ -20,19 +20,19 @@ methods.findById = (req, res, next) => {
     if (req.params.id.length > 0) {
       Feedback.findById(req.params.id)
         .populate(['user', 'votes'])
-        .exec(function(err, feedback) {
+        .exec(function (err, feedback) {
           // console.log('in controller, found feedback: ', feedback);
-          if(err) {
-            res.json({error: err, success: false});
+          if (err) {
+            res.json({ error: err, success: false });
           } else {
-            res.json({feedback: feedback, success: true});
+            res.json({ feedback: feedback, success: true });
           }
         });
     } else {
-      res.json({success: false, message: 'Feedback id tidak boleh kosong!'});
+      res.json({ success: false, message: 'Feedback id tidak boleh kosong!' });
     }
   } else {
-    res.json({success: false, message: 'Feedback id tidak boleh kosong!'});
+    res.json({ success: false, message: 'Feedback id tidak boleh kosong!' });
   }
 }
 
@@ -69,14 +69,16 @@ methods.update = (req, res, next) => {
         res.json({ error: err, success: false });
       } else {
         if (feedback && feedback !== null) {
-          Feedback.update({_id: id}, {$set: {
-            url: feedback.url,
-            name: req.body.name || feedback.name,
-            description: req.body.description || feedback.description,
-            votes: feedback.votes,
-            hoaxVoteCount: feedback.hoaxVoteCount,
-            nonHoaxVoteCount: feedback.nonHoaxVoteCount
-          }}, (err, updated) => {
+          Feedback.update({ _id: id }, {
+            $set: {
+              url: feedback.url,
+              name: req.body.name || feedback.name,
+              description: req.body.description || feedback.description,
+              votes: feedback.votes,
+              hoaxVoteCount: feedback.hoaxVoteCount,
+              nonHoaxVoteCount: feedback.nonHoaxVoteCount
+            }
+          }, (err, updated) => {
             res.json({ feedback: feedback, success: true });
           });
         } else {
@@ -91,11 +93,11 @@ methods.update = (req, res, next) => {
 }
 
 methods.delete = (req, res, next) => {
-  Feedback.remove({_id:req.params.id}, (err) => {
+  Feedback.remove({ _id: req.params.id }, (err) => {
     if (err) {
-      res.json({success: false, error: err});
+      res.json({ success: false, error: err });
     } else {
-      res.json({success: true, message: 'feedback is successfully deleted'});
+      res.json({ success: true, message: 'feedback is successfully deleted' });
     }
   });
 }
@@ -104,9 +106,9 @@ methods.vote = (req, res, next) => {
 
   if (req.body.userId && req.body.value && req.body.name && req.body.description) {
 
-    Feedback.find({description: req.body.description})
+    Feedback.find({ description: req.body.description })
       .populate('vote')
-      .exec(function(err, feedback) {
+      .exec(function (err, feedback) {
         if (err) {
           res.json({ error: err, success: false });
         } else {
@@ -130,17 +132,17 @@ methods.vote = (req, res, next) => {
 
               if (Number(req.body.value) !== Number(feedback.votes[foundIndex].value)) {
                 if (Number(feedback.votes[foundIndex].value) === 1) {
-                  feedback.hoaxVoteCount --;
+                  feedback.hoaxVoteCount--;
                   feedback.votes[foundIndex].value = 0;
                 } else if (Number(feedback.votes[foundIndex].value) === -1) {
-                  feedback.nonHoaxVoteCount --;
+                  feedback.nonHoaxVoteCount--;
                   feedback.votes[foundIndex].value = 0;
                 } else {
                   if (Number(req.body.value) === 1) {
-                    feedback.hoaxVoteCount ++;
+                    feedback.hoaxVoteCount++;
                     feedback.votes[foundIndex].value = req.body.value;
                   } else {
-                    feedback.nonHoaxVoteCount ++;
+                    feedback.nonHoaxVoteCount++;
                     feedback.votes[foundIndex].value = req.body.value;
                   }
                 }
@@ -158,9 +160,9 @@ methods.vote = (req, res, next) => {
             } else {
 
               if (Number(req.body.value) === 1) {
-                feedback.hoaxVoteCount ++;
+                feedback.hoaxVoteCount++;
               } else {
-                feedback.nonHoaxVoteCount ++;
+                feedback.nonHoaxVoteCount++;
               }
               feedback.votes.push({
                 user: req.body.userId,
@@ -186,9 +188,9 @@ methods.vote = (req, res, next) => {
             });
 
             if (Number(req.body.value) === 1) {
-              newFeedback.hoaxVoteCount ++;
+              newFeedback.hoaxVoteCount++;
             } else {
-              newFeedback.nonHoaxVoteCount ++;
+              newFeedback.nonHoaxVoteCount++;
             }
             newFeedback.votes.push({
               user: req.body.userId,
