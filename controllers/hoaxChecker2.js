@@ -121,7 +121,7 @@ const hoaxChecker = (req, res, next) => {
                   let minSimVal = 50;
                   let relevantNews = [];
                   newsSearchResult.map((news) => {
-                    // news.negation = newsNegationCheck(input, news.name);
+                    news.negation = newsNegationCheck(input, news.name);
                     if (Number(news.similarity) >= minSimVal) {
                       relevantNews.push(news);
                     }
