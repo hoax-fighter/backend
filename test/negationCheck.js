@@ -41,7 +41,7 @@ describe('Negation check', function() {
       const array = 'madrid juara';
       negation(string, array).status.should.equal('success');
       negation(string, array).result.should.equal(true);
-      negation(string, array).message.should.equal('the string without negation finds similarity > 90 %, most likely not a hoax');
+      negation(string, array).message.should.equal('the string without negation finds similarity > 80 %, most likely not a hoax');
     });
 
     it('should return result false if "madrid tidak juara" and "persib juara" are compared', function() {

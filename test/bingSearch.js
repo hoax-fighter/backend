@@ -19,7 +19,7 @@ describe('Bing', () => {
                 .end((error, result) => {
                     // console.log(result.body.record)
                     result.body.record.should.be.a('array')
-                    result.body.record.length.should.equal(15)
+                    result.body.record.length.should.equal(25)
                     result.body.success.should.equal(true)
                 })
         })
@@ -37,7 +37,7 @@ describe('Bing', () => {
                 .end((error, result) => {
                     // console.log(result.body.record)
                     result.body.record.should.be.a('array')
-                    result.body.record.length.should.equal(15)
+                    result.body.record.length.should.equal(25)
                     result.body.success.should.equal(true)
                 })
         })
