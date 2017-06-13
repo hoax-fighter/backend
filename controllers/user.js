@@ -12,8 +12,8 @@ methods.getAll = (req, res, next) => {
   });
 }
 
-methods.findById = (req, res, next) => {
-  User.findById(req.params.id, (err, users) => {
+methods.findUser = (req, res, next) => {
+  User.findOne({email: req.params.email}, (err, users) => {
     if (err) {
       res.json({ error: err, success: false });
     } else {
