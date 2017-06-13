@@ -18,6 +18,8 @@
 
 const summarizer = (data) => {
 
+  console.log(data);
+
   const indication = 1;
   if (data.indications.summary) {
     indication = 0;
@@ -26,6 +28,7 @@ const summarizer = (data) => {
   const totalEntries = data.sources.length;
   let acceptable = 0;
   data.sources.map((source) => {
+    console.log(source);
     if (source.isUrlReputable) {
       if (source.feedback) {
         if (source.feedback.nonHoaxVoteCount >= source.feedback.hoaxVoteCount) {
@@ -39,6 +42,7 @@ const summarizer = (data) => {
 
   let result = {};
   const score = Math.floor(indication*15 + (acceptable/totalEntries)*85);
+  console.log(score);
   if (score > 50) {
     result.remark = `${score}% hasil pencarian mengindikasikan Fakta`;
     if (score > 85) {
