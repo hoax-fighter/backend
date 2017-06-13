@@ -33,9 +33,10 @@ methods.create = (req, res, next) => {
 }
 
 methods.web = (req, res, next) => {
-  Bing.web(req.body.word, {
+  const input = String(req.body.word);
+  Bing.web(input, {
     market: 'en-ID',
-    count: 15,
+    count: 25,
   }, function (error, result, body) {
     if (error) {
       res.json({
@@ -51,7 +52,7 @@ methods.web = (req, res, next) => {
       body.webPages.value.map(function (arr) {
         var hasil = similarityCheck.averagedSimilarity(arr.name, req.body.word)
         if (hasil.status == 'success') {
-          obj.hasil = hasil.value
+          obj.similarity = hasil.value
         }
         obj.id = arr.id;
         obj.provider = arr.displayUrl;
@@ -60,6 +61,20 @@ methods.web = (req, res, next) => {
         obj.dateLastCrawled = arr.dateLastCrawled;
         obj.url = arr.displayUrl;
         obj.description = arr.snippet;
+
+        const parsedInput = input.split('. ');
+        if (parsedInput.length > 1) {
+          const sentences = obj.description.split('. ');
+          sentences.map((sentence) => {
+            parsedInput.map((item) => {
+              const similarity = similarityCheck.averagedSimilarity(item, sentence);
+              if (similarity > obj.similarity) {
+                obj.similarity = similarity;
+              }
+            });
+          });
+        }
+
         arr1.push(obj)
 
         obj = {}
@@ -76,9 +91,10 @@ methods.web = (req, res, next) => {
 }
 
 methods.news = (req, res, next) => {
-  Bing.news(req.body.word, {
+  const input = String(req.body.word);
+  Bing.news(String(input), {
     market: 'en-ID',
-    count: 15
+    count: 25
   },
     function (error, result, body) {
 
@@ -102,14 +118,27 @@ methods.news = (req, res, next) => {
           body.value.map(function (arr) {
             var hasil = similarityCheck.averagedSimilarity(arr.name, req.body.word)
             if (hasil.status == 'success') {
-              obj.hasil = hasil.value
+              obj.similarity = hasil.value
             }
             obj.name = arr.name
             obj.url = arr.url
             obj.description = arr.description
             obj.provider = arr.provider[0].name
             obj.datePublished = arr.datePublished
-            obj.isUrlReputable = true
+
+            const parsedInput = input.split('. ');
+            if (parsedInput.length > 1) {
+              const sentences = obj.description.split('. ');
+              sentences.map((sentence) => {
+                parsedInput.map((item) => {
+                  const similarity = similarityCheck.averagedSimilarity(item, sentence);
+                  if (similarity > obj.similarity) {
+                    obj.similarity = similarity;
+                  }
+                });
+              });
+            }
+
             arr1.push(obj)
 
             obj = {}
