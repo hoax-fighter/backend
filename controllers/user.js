@@ -13,13 +13,9 @@ methods.getAll = (req, res, next) => {
 }
 
 methods.findUser = (req, res, next) => {
-<<<<<<< HEAD
-  User.findOne({email: req.params.email}, (err, users) => {
-=======
   User.findOne({
     email: req.params.email
   }, (err, users) => {
->>>>>>> cdebe453e59be04bf695839d3883e9227f431c8c
     if (err) {
       res.json({ error: err, success: false });
     } else {
