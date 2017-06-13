@@ -30,7 +30,7 @@ const summarizer = (data) => {
     indication = 0;
   }
 
-  const totalEntries = data.sources.length;
+  const totalEntries = data.sources.length + data.posts.length;
   let acceptable = 0;
   data.sources.map((source) => {
     if (source.isUrlReputable) {
@@ -41,6 +41,13 @@ const summarizer = (data) => {
       } else {
         acceptable ++;
       }
+    }
+  });
+  data.posts.map((post) => {
+    if (post.nonHoaxVoteCount >= post.hoaxVoteCount) {
+      acceptable ++;
+    } else {
+      acceptable ++;
     }
   });
 
