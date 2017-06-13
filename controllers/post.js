@@ -101,77 +101,91 @@ methods.delete = (req, res, next) => {
 }
 
 methods.vote = (req, res, next) => {
+
   if (req.params.postId && req.body.userId && req.body.value) {
-    Post.findById(req.params.postId, (err, post) => {
-      if (err) {
-        res.json({ error: err, success: false });
-      } else {
 
-        let foundVote;
-        let foundIndex;
-        post.votes.map((vote, index) => {
-          if(String(vote.user) === String(req.body.userId)) {
-            foundVote = vote;
-            foundIndex = index;
-          }
-        });
+    Post.findById(req.params.postId)
+      .populate('user')
+      .exec((err, post) => {
 
-        if (foundVote) {
+        if (err) {
 
-          let message = '';
-
-          if (Number(req.body.value) !== Number(post.votes[foundIndex].value)) {
-            // console.log('original post.hoaxVoteCount: ', post.hoaxVoteCount);
-            // console.log('original post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
-            // console.log('original vote value: ', post.votes[foundIndex].value);
-            if (Number(post.votes[foundIndex].value) === 1) {
-              post.hoaxVoteCount --;
-              post.votes[foundIndex].value = 0;
-            } else if (Number(post.votes[foundIndex].value) === -1) {
-              post.nonHoaxVoteCount --;
-              post.votes[foundIndex].value = 0;
-            } else {
-              if (Number(req.body.value) === 1) {
-                post.hoaxVoteCount ++;
-                post.votes[foundIndex].value = req.body.value;
-              } else {
-                post.nonHoaxVoteCount ++;
-                post.votes[foundIndex].value = req.body.value;
-              }
-            }
-
-            message = 'Edit vote berhasil';
-
-            // console.log('updated vote value: ', post.votes[foundIndex].value);
-            // console.log('updated post.hoaxVoteCount: ', post.hoaxVoteCount);
-            // console.log('updated post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
-            // console.log('updated vote value: ', post.votes[foundIndex].value);
-
-            post.save((err, post) => {
-              res.json({ post: post, success: true, message: message });
-            });
-
-          } else {
-            res.json({ success: false, error: 'Tidak bisa vote lagi!' });
-          }
+          res.json({ error: err, success: false });
 
         } else {
-          if (Number(req.body.value) === 1) {
-            post.hoaxVoteCount ++;
+
+          let foundVote;
+          let foundIndex;
+          post.votes.map((vote, index) => {
+            if(String(vote.user) === String(req.body.userId)) {
+              foundVote = vote;
+              foundIndex = index;
+            }
+          });
+
+          if (foundVote) {
+
+            let message = '';
+
+            if (Number(req.body.value) !== Number(post.votes[foundIndex].value)) {
+              // console.log('original post.hoaxVoteCount: ', post.hoaxVoteCount);
+              // console.log('original post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
+              // console.log('original vote value: ', post.votes[foundIndex].value);
+              if (Number(post.votes[foundIndex].value) === 1) {
+                post.hoaxVoteCount --;
+                post.votes[foundIndex].value = 0;
+              } else if (Number(post.votes[foundIndex].value) === -1) {
+                post.nonHoaxVoteCount --;
+                post.votes[foundIndex].value = 0;
+              } else {
+                if (Number(req.body.value) === 1) {
+                  post.hoaxVoteCount ++;
+                  post.votes[foundIndex].value = req.body.value;
+                } else {
+                  post.nonHoaxVoteCount ++;
+                  post.votes[foundIndex].value = req.body.value;
+                }
+              }
+
+              message = 'Edit vote berhasil';
+
+              // console.log('updated vote value: ', post.votes[foundIndex].value);
+              // console.log('updated post.hoaxVoteCount: ', post.hoaxVoteCount);
+              // console.log('updated post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
+              // console.log('updated vote value: ', post.votes[foundIndex].value);
+
+              post.save((err, post) => {
+                if (err) {
+                  res.json({ success: false, error: err });
+                } else {
+                  res.json({ post: post, success: true, message: message });
+                }
+
+              });
+
+            } else {
+              res.json({ success: false, error: 'Tidak bisa vote lagi!' });
+            }
+
           } else {
-            post.nonHoaxVoteCount ++;
+            if (Number(req.body.value) === 1) {
+              post.hoaxVoteCount ++;
+            } else {
+              post.nonHoaxVoteCount ++;
+            }
+            post.votes.push({
+              user: req.body.userId,
+              value: req.body.value,
+              createdAt: new Date()
+            });
+            post.save((err, post) => {
+              res.json({ post: post, success: true });
+            });
           }
-          post.votes.push({
-            user: req.body.userId,
-            value: req.body.value,
-            createdAt: new Date()
-          });
-          post.save((err, post) => {
-            res.json({ post: post, success: true });
-          });
         }
-      }
-    });
+
+      });
+
   } else {
     res.json({ error: 'Id post, Id user, value vote tidak boleh kosong', success: false });
   }
