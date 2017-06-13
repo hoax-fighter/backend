@@ -115,7 +115,7 @@ methods.vote = (req, res, next) => {
 
           if (feedback && feedback.length > 0) {
 
-            let foundIndex;
+            let foundIndex = null;
             feedback = feedback[0];
 
             feedback.votes.map((vote, index) => {
@@ -126,7 +126,7 @@ methods.vote = (req, res, next) => {
 
             let message = '';
 
-            if (foundIndex) {
+            if (foundIndex !== null) {
 
               if (Number(req.body.value) !== Number(feedback.votes[foundIndex].value)) {
                 if (Number(feedback.votes[foundIndex].value) === 1) {

@@ -114,8 +114,8 @@ methods.vote = (req, res, next) => {
 
         } else {
 
-          let foundVote;
-          let foundIndex;
+          let foundVote = null;
+          let foundIndex = null;
           post.votes.map((vote, index) => {
             if(String(vote.user) === String(req.body.userId)) {
               foundVote = vote;
@@ -123,7 +123,7 @@ methods.vote = (req, res, next) => {
             }
           });
 
-          if (foundVote) {
+          if (foundVote !== null) {
 
             let message = '';
 
