@@ -6,18 +6,20 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
 
-app.use(cors());
+app.use(function(req, res, next) {
+ res.header("Access-Control-Allow-Origin", "*")
+ res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+ next()
+})
+
+// app.use(cors());
 // mongoose setup
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 
 const localDb = 'mongodb://localhost/hoax-fighter';
-<<<<<<< HEAD
 const atlas = 'mongodb://diditaditya:hoaxchecker@liedb-shard-00-00-oj2ia.mongodb.net:27017,liedb-shard-00-01-oj2ia.mongodb.net:27017,liedb-shard-00-02-oj2ia.mongodb.net:27017/hoax-dev?ssl=true&replicaSet=LIEdb-shard-0&authSource=admin';
-=======
-const atlas = 'mongodb://diditaditya:hoaxchecker@liedb-shard-00-00-oj2ia.mongodb.net:27017,liedb-shard-00-01-oj2ia.mongodb.net:27017,liedb-shard-00-02-oj2ia.mongodb.net:27017/hoax-dev?ssl=true&replicaSet=LIEdb-shard-0&authSource=admin' ;
->>>>>>> 262cba080334ce994965ba14de5b18fccd0de451
 let db_config = {
   development: atlas,
   test: 'mongodb://localhost/hoax-fighter-test',
