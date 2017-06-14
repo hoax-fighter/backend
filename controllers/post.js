@@ -63,16 +63,16 @@ methods.create = (req, res, next) => {
 }
 
 methods.update = (req, res, next) => {
-  console.log('        ------------in Post.update ---------');
-  console.log('        req.params.id: ',req.params.id);
-  console.log('        req.body: ',req.body);
+  // console.log('        ------------in Post.update ---------');
+  // console.log('        req.params.id: ',req.params.id);
+  // console.log('        req.body: ',req.body);
   if (req.params.id) {
     Post.findById(req.params.id, (err, post) => {
       if (err) {
         res.json({ error: err, success: false });
       } else {
         if (post && post !== null) {
-          console.log('        -----------Post Id is found---------');
+          // console.log('        -----------Post Id is found---------');
           // Post.update({ _id: req.params.id }, {
           //   $set: {
           //     user: post.user,
