@@ -105,7 +105,6 @@ methods.delete = (req, res, next) => {
 methods.vote = (req, res, next) => {
 
   if (req.body.userId && req.body.value && req.body.name && req.body.description) {
-
     Feedback.find({ name: req.body.name })
       .populate('vote')
       .exec(function (err, feedback) {

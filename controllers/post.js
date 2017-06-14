@@ -72,24 +72,20 @@ methods.update = (req, res, next) => {
         res.json({ error: err, success: false });
       } else {
         if (post && post !== null) {
-          // console.log('        -----------Post Id is found---------');
-          // Post.update({ _id: req.params.id }, {
-          //   $set: {
-          //     user: post.user,
-          //     title: req.body.title || post.title,
-          //     content: req.body.content || post.content,
-          //     votes: post.votes,
-          //     hoaxVoteCount: post.hoaxVoteCount,
-          //     nonHoaxVoteCount: post.nonHoaxVoteCount
-          //   }
-          // }, (err, updated) => {
-          //   if (err) {
-          //     res.json({ error: 'Error updating post', success: false });
-          //   } else {
-          //     console.log('        -----------Successfully updated the post---------');
-          //     res.json({ post: post, success: true });
-          //   }
-          // });
+          Post.update({ _id: req.params.id }, {
+            $set: {
+              user: post.user,
+              title: req.body.title || post.title,
+              content: req.body.content || post.content,
+              votes: post.votes
+            }
+          }, (err, updated) => {
+            if (err) {
+              res.json({ error: 'Error updating post', success: false });
+            } else {
+              res.json({ post: post, success: true });
+            }
+          });
         } else {
           res.json({ error: 'Id post tidak ditemukan', success: false });
         }
