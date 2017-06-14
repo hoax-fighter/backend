@@ -13,28 +13,28 @@ describe('Post API', function() {
 
 
 
-    beforeEach(function(done) {
+    // beforeEach(function(done) {
+    //
+    //   done();
+    // });
 
-      done();
-    });
-
-    afterEach(function(done) {
-      Post.remove({}, function(err) {
-        if (err) {
-          console.log(err);
-        } else {
-          // console.log('posts are deleted!');
-        }
-      });
-      User.remove({}, function(err) {
-        if (err) {
-          console.log(err);
-        } else {
-          // console.log('users are deleted!');
-        }
-      });
-      done();
-    });
+    // afterEach(function(done) {
+    //   Post.remove({}, function(err) {
+    //     if (err) {
+    //       console.log(err);
+    //     } else {
+    //       // console.log('posts are deleted!');
+    //     }
+    //   });
+    //   User.remove({}, function(err) {
+    //     if (err) {
+    //       console.log(err);
+    //     } else {
+    //       // console.log('users are deleted!');
+    //     }
+    //   });
+    //   done();
+    // });
 
     describe('GET /api/board/posts', function() {
 
@@ -84,7 +84,23 @@ describe('Post API', function() {
               // result.body.posts.length.should.equal(1);
             }
           });
-          done();
+
+        Post.remove({}, function(err) {
+          if (err) {
+            console.log(err);
+          } else {
+            // console.log('posts are deleted!');
+          }
+        });
+        User.remove({}, function(err) {
+          if (err) {
+            console.log(err);
+          } else {
+            // console.log('users are deleted!');
+          }
+        });
+
+        done();
       });
 
     });
@@ -135,6 +151,20 @@ describe('Post API', function() {
                   });
               }
             });
+          }
+        });
+        Post.remove({}, function(err) {
+          if (err) {
+            console.log(err);
+          } else {
+            // console.log('posts are deleted!');
+          }
+        });
+        User.remove({}, function(err) {
+          if (err) {
+            console.log(err);
+          } else {
+            // console.log('users are deleted!');
           }
         });
         done();
@@ -193,20 +223,148 @@ describe('Post API', function() {
 
     describe('POST /api/board/posts', function() {
 
-      it('should return error if userId or title or content is/are empty', function(done) {
+      it('should return error if userId is empty', function(done) {
+
         chai.request(server)
-          .get(`api/board/posts`)
-          // .send({userId: '', title: 'akjdshaksjd', content: 'askdhasdk'})
+          .post(`/api/board/posts`)
+          .send({
+            userId: '',
+            title: 'doraemon',
+            content: 'doraemon adalah berasal dari ramalan yang akurat tentang masa depan.'
+          })
           .end((err, result) => {
-            if(err) {
-              console.log(err);
+            if (err) {
+              console.log('error');
             } else {
-              console.log(result.body);
+              // console.log('result.body ', result.body);
+              result.body.success.should.equal(false);
+              result.body.should.have.property('error');
             }
           });
         done();
       });
 
+      it('should return error if title or content is/are empty', function(done) {
+
+        chai.request(server)
+          .post(`/api/board/posts`)
+          .send({
+            userId: '593cec6e9dca60366511ae92',
+            title: '',
+            content: 'doraemon adalah berasal dari ramalan yang akurat tentang masa depan.'
+          })
+          .end((err, result) => {
+            if (err) {
+              console.log('error');
+            } else {
+              // console.log('result.body ', result.body);
+              result.body.success.should.equal(false);
+              result.body.should.have.property('error');
+            }
+          });
+
+          Post.remove({}, function(err) {
+            if (err) {
+              console.log(err);
+            } else {
+              // console.log('posts are deleted!');
+            }
+          });
+          User.remove({}, function(err) {
+            if (err) {
+              console.log(err);
+            } else {
+              // console.log('users are deleted!');
+            }
+          });
+
+        done();
+      });
+
+      it('should return success and post if userId, title, and content are proper', function(done) {
+
+        chai.request(server)
+          .post(`/api/board/posts`)
+          .send({
+            user: '593cec6e9dca60366511ae92',
+            title: 'doraemon',
+            content: 'doraemon adalah berasal dari ramalan yang akurat tentang masa depan.'
+          })
+          .end((err, result) => {
+            // console.log('result.body ', result.body);
+            if (err) {
+              console.log('error');
+            } else {
+              result.body.success.should.equal(true);
+              result.body.should.have.property('post');
+            }
+          });
+
+          Post.remove({}, function(err) {
+            if (err) {
+              console.log(err);
+            } else {
+              // console.log('posts are deleted!');
+            }
+          });
+          User.remove({}, function(err) {
+            if (err) {
+              console.log(err);
+            } else {
+              // console.log('users are deleted!');
+            }
+          });
+
+        done();
+      });
+
+    });
+
+    describe('PUT /api/board/post/:id', function() {
+
+      it('should update the title if new title is provided', function(done) {
+
+        chai.request(server)
+          .post(`/api/board/posts`)
+          .send({
+            user: '593cec6e9dca60366511ae92',
+            title: 'doraemon',
+            content: 'doraemon adalah berasal dari ramalan yang akurat tentang masa depan.'
+          })
+          .end((err, result) => {
+            if (err) {
+              console.log('error');
+            } else {
+              // console.log('result.body ', result.body);
+              chai.request(server)
+                .put(`/api/board/post/${result.body.post._id}`)
+                .send({
+                  title: 'kucing dari masa depan'
+                })
+                .end((err, result) => {
+                  console.log('put result.body: ', result.body);
+                });
+              // result.body.success.should.equal(true);
+              // result.body.should.have.property('post');
+            }
+          });
+
+          Post.remove({}, function(err) {
+            if (err) {
+              console.log(err);
+            } else {
+              // console.log('posts are deleted!');
+            }
+          });
+          User.remove({}, function(err) {
+            if (err) {
+              console.log(err);
+            } else {
+              // console.log('users are deleted!');
+            }
+          });
+        done();
+      });
 
     });
 

@@ -27,17 +27,21 @@ methods.findUser = (req, res, next) => {
 
 
 methods.create = (req, res, next) => {
-  User.create({
-    name: req.body.name,
-    email: req.body.email,
-    createdAt: new Date()
-  }, (err, user) => {
-    if (err) {
-      res.json({ error: err, success: false });
-    } else {
-      res.json({ user: user, success: true });
-    }
-  });
+  if (req.body.name && req.body.email) {
+    User.create({
+      name: req.body.name,
+      email: req.body.email,
+      createdAt: new Date()
+    }, (err, user) => {
+      if (err) {
+        res.json({ error: err, success: false });
+      } else {
+        res.json({ user: user, success: true });
+      }
+    });
+  } else {
+    res.json({error: 'name and email are required', success: false});
+  }
 }
 
 methods.update = (req, res, next) => {
@@ -59,13 +63,18 @@ methods.update = (req, res, next) => {
 }
 
 methods.delete = (req, res, next) => {
-  User.remove({ _id: req.params.id }, (err) => {
-    if (err) {
-      res.json({ success: false, error: err });
-    } else {
-      res.json({ success: true, message: 'database is now empty' });
-    }
-  });
+  if (req.params.id) {
+    User.remove({ _id: req.params.id }, (err) => {
+      if (err) {
+        res.json({ success: false, error: err });
+      } else {
+        res.json({ success: true, message: 'user is successfully deleted' });
+      }
+    });
+  } else {
+    res.json({ success: false, error: 'user id is required' });
+  }
+
 }
 
 module.exports = methods;
