@@ -6,14 +6,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
 
-
+app.use(cors());
 // mongoose setup
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 
 const localDb = 'mongodb://localhost/hoax-fighter';
-const atlas = process.env.ATLAS;
+const atlas = 'mongodb://diditaditya:hoaxchecker@liedb-shard-00-00-oj2ia.mongodb.net:27017,liedb-shard-00-01-oj2ia.mongodb.net:27017,liedb-shard-00-02-oj2ia.mongodb.net:27017/hoax-dev?ssl=true&replicaSet=LIEdb-shard-0&authSource=admin';
 let db_config = {
   development: atlas,
   test: 'mongodb://localhost/hoax-fighter-test',
@@ -36,7 +36,7 @@ app.set('port', process.env.PORT || 3002);
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(cors());
+
 
 // routes
 const source = require('./routes/source');
