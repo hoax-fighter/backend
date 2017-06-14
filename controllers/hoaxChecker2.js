@@ -248,6 +248,9 @@ const hoaxChecker = (req, res, next) => {
                                       if (Number(news.similarity) >= minSimVal) {
                                         relevantWeb.push(news);
                                       }
+                                      if (news.feedback) {
+                                        relevantWeb.push(news);
+                                      }
                                     });
 
                                     if (relevantWeb.length > 0) {

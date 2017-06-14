@@ -106,7 +106,7 @@ methods.vote = (req, res, next) => {
 
   if (req.body.userId && req.body.value && req.body.name && req.body.description) {
 
-    Feedback.find({ description: req.body.description })
+    Feedback.find({ name: req.body.name })
       .populate('vote')
       .exec(function (err, feedback) {
         if (err) {
@@ -129,6 +129,8 @@ methods.vote = (req, res, next) => {
             let message = '';
 
             if (foundIndex !== null) {
+
+              console.log('userId is found in votes');
 
               if (Number(req.body.value) !== Number(feedback.votes[foundIndex].value)) {
                 if (Number(feedback.votes[foundIndex].value) === 1) {
@@ -158,6 +160,8 @@ methods.vote = (req, res, next) => {
               }
 
             } else {
+
+              console.log('userId is not found in votes');
 
               if (Number(req.body.value) === 1) {
                 feedback.hoaxVoteCount++;
