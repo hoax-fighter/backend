@@ -159,6 +159,7 @@ const hoaxChecker = (req, res, next) => {
                       let relevantNews = [];
                       console.log('checking the news for relevance and negations..');
                       newsSearchResult.map((news) => {
+                        news.isUrlReputable = true;
                         // console.log('processing news');
                         news.negation = newsNegationCheck(input, news.name);
                         // console.log(news.negation);
@@ -180,7 +181,7 @@ const hoaxChecker = (req, res, next) => {
                             console.log('user feedback has been fetched.');
                             response.data.feedbacks.map((feedback) => {
                               relevantNews.map((source) => {
-                                source.isUrlReputable = true;
+
                                 if (String(feedback.name) === String(source.name) && String(feedback.description) === String(source.description) ) {
                                   source.feedback = feedback;
                                 }
