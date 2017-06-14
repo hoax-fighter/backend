@@ -179,10 +179,12 @@ const hoaxChecker = (req, res, next) => {
                         axios.get('http://localhost:3002/api/source/feedback')
                           .then((response) => {
                             console.log('user feedback has been fetched.');
+                            console.log(response.data);
                             response.data.feedbacks.map((feedback) => {
                               relevantNews.map((source) => {
 
-                                if (String(feedback.name) === String(source.name) && String(feedback.description) === String(source.description) ) {
+                                if (String(feedback.name) === String(source.name)) {
+                                  console.log('feedback name matches!');
                                   source.feedback = feedback;
                                 }
                               });
@@ -231,19 +233,26 @@ const hoaxChecker = (req, res, next) => {
                                 let checkedWebSources = webCheck(searchResult, reputable, blacklist);
 
                                 // combine with user feedback
+                                let relevantWeb = [];
                                 axios.get('http://localhost:3002/api/source/feedback')
                                   .then((response) => {
-
+                                    console.log('done fetching user feedback for web search result');
+                                    // console.log(response.data);
                                     response.data.feedbacks.map((feedback) => {
                                       checkedWebSources.sources.map((source) => {
-                                        if (String(feedback.name) === String(source.name) && String(feedback.description) === String(source.description) ) {
+                                        // console.log('source name: ', source.name);
+                                        // console.log('feedback name: ', feedback.name);
+                                        if (String(feedback.name) === String(source.name)) {
                                           source.feedback = feedback;
+                                          // relevantWeb.push(source);
+                                          // console.log(source);
                                         }
                                       });
                                     });
 
+
                                     let minSimVal = simValWeb;
-                                    let relevantWeb = [];
+                                    
                                     checkedWebSources.sources.map((news) => {
                                       news.negation = newsNegationCheck(input, news.name);
                                       if (Number(news.similarity) >= minSimVal) {
@@ -263,7 +272,7 @@ const hoaxChecker = (req, res, next) => {
                                       let final = {
                                         success: true,
                                         posts: result.posts,
-                                        sources: relevantWeb,
+                                        sources: checkedWebSources.sources,
                                         reputable: relevantWebCheck.reputable,
                                         blacklist: relevantWebCheck.blacklist,
                                         nonReputable: relevantWebCheck.nonReputable,
