@@ -55,32 +55,41 @@ methods.create = (req, res, next) => {
         }
       });
     } else {
-      res.json({ error: 'user id, title, content tidak boleh kosong', success: false });
+      res.json({ error: 'user, title, content tidak boleh kosong', success: false });
     }
   } else {
-    res.json({ error: 'user id, title, content tidak boleh kosong', success: false });
+    res.json({ error: 'user, title, content tidak boleh kosong', success: false });
   }
 }
 
 methods.update = (req, res, next) => {
+  // console.log('        ------------in Post.update ---------');
+  // console.log('        req.params.id: ',req.params.id);
+  // console.log('        req.body: ',req.body);
   if (req.params.id) {
     Post.findById(req.params.id, (err, post) => {
       if (err) {
         res.json({ error: err, success: false });
       } else {
         if (post && post !== null) {
-          Post.update({ _id: req.params.id }, {
-            $set: {
-              user: post.user,
-              title: req.body.title || post.title,
-              content: req.body.content || post.content,
-              votes: post.votes,
-              hoaxVoteCount: post.hoaxVoteCount,
-              nonHoaxVoteCount: post.nonHoaxVoteCount
-            }
-          }, (err, updated) => {
-            res.json({ post: post, success: true });
-          });
+          // console.log('        -----------Post Id is found---------');
+          // Post.update({ _id: req.params.id }, {
+          //   $set: {
+          //     user: post.user,
+          //     title: req.body.title || post.title,
+          //     content: req.body.content || post.content,
+          //     votes: post.votes,
+          //     hoaxVoteCount: post.hoaxVoteCount,
+          //     nonHoaxVoteCount: post.nonHoaxVoteCount
+          //   }
+          // }, (err, updated) => {
+          //   if (err) {
+          //     res.json({ error: 'Error updating post', success: false });
+          //   } else {
+          //     console.log('        -----------Successfully updated the post---------');
+          //     res.json({ post: post, success: true });
+          //   }
+          // });
         } else {
           res.json({ error: 'Id post tidak ditemukan', success: false });
         }

@@ -8,10 +8,10 @@ const webCheck = require('../helper/webCheck');
 const rules = require('../helper/hoaxRulesCheck');
 const summarizer = require('../helper/summarizer');
 
-const simValPost = 60;
+const simValPost = 50;
 const simValTbh = 60;
-const simValNews = 60;
-const simValWeb = 60;
+const simValNews = 30;
+const simValWeb = 30;
 
 const hoaxChecker = (req, res, next) => {
 
