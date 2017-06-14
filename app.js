@@ -1,3 +1,5 @@
+//atlas db = mongodb://diditaditya:hoaxchecker@liedb-shard-00-00-oj2ia.mongodb.net:27017,liedb-shard-00-01-oj2ia.mongodb.net:27017,liedb-shard-00-02-oj2ia.mongodb.net:27017/hoax-dev?ssl=true&replicaSet=LIEdb-shard-0&authSource=admin
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -9,9 +11,12 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
+
+const localDb = 'mongodb://localhost/hoax-fighter';
+const atlas = process.env.ATLAS;
 let db_config = {
-  development: 'mongodb://localhost/hoax-fighter',
-  test: 'mongodb://localhost/hoax-fighter-test'
+  development: atlas,
+  test: 'mongodb://localhost/hoax-fighter-test',
 }
 
 const db = mongoose.connection;
