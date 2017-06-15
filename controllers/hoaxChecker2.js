@@ -7,6 +7,7 @@ const newsNegationCheck = require('../helper/newsNegationCheck');
 const webCheck = require('../helper/webCheck');
 const rules = require('../helper/hoaxRulesCheck');
 const summarizer = require('../helper/summarizer');
+import { url } from '../helper/constants';
 
 const simValPost = 50;
 const simValTbh = 60;
@@ -151,7 +152,7 @@ const hoaxChecker = (req, res, next) => {
                   result.indications = rules.check(input);
 
                   // hoax is not found in tbh database, search the news
-                  axios.post('http://localhost:3002/api/source/news', {word: input})
+                  axios.post(`${url}api/source/news`, {word: input})
                     .then((response) => {
                       console.log('done fetching news.');
                       const newsSearchResult = response.data.record;
@@ -176,7 +177,7 @@ const hoaxChecker = (req, res, next) => {
                         result.sources = relevantNews;
 
                         // combine the relevant news with feedback from users
-                        axios.get('http://localhost:3002/api/source/feedback')
+                        axios.get(`${url}api/source/feedback`)
                           .then((response) => {
                             console.log('user feedback has been fetched.');
                             console.log(response.data);

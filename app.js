@@ -12,7 +12,7 @@ app.use(function(req, res, next) {
  next()
 })
 
-// app.use(cors());
+app.use(cors());
 // mongoose setup
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
