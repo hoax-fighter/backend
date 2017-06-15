@@ -60,14 +60,14 @@ describe('Post API', function() {
           if (err) {
             console.log(err);
           } else {
-            console.log('posts are deleted!');
+            // console.log('posts are deleted!');
           }
         });
         User.remove({}, function(err) {
           if (err) {
             console.log(err);
           } else {
-            console.log('users are deleted!');
+            // console.log('users are deleted!');
           }
         });
 
@@ -124,14 +124,14 @@ describe('Post API', function() {
           if (err) {
             console.log(err);
           } else {
-            console.log('posts are deleted!');
+            // console.log('posts are deleted!');
           }
         });
         User.remove({}, function(err) {
           if (err) {
             console.log(err);
           } else {
-            console.log('users are deleted!');
+            // console.log('users are deleted!');
           }
         });
         done();
@@ -228,14 +228,14 @@ describe('Post API', function() {
             if (err) {
               console.log(err);
             } else {
-              console.log('posts are deleted!');
+              // console.log('posts are deleted!');
             }
           });
           User.remove({}, function(err) {
             if (err) {
               console.log(err);
             } else {
-              console.log('users are deleted!');
+              // console.log('users are deleted!');
             }
           });
 
@@ -264,14 +264,14 @@ describe('Post API', function() {
             if (err) {
               console.log(err);
             } else {
-              console.log('posts are deleted!');
+              // console.log('posts are deleted!');
             }
           });
           User.remove({}, function(err) {
             if (err) {
               console.log(err);
             } else {
-              console.log('users are deleted!');
+              // console.log('users are deleted!');
             }
           });
 
@@ -301,7 +301,7 @@ describe('Post API', function() {
                   title: 'kucing dari masa depan'
                 })
                 .end((err, result) => {
-                  console.log('put result.body: ', result.body);
+                  // console.log('put result.body: ', result.body);
                 });
             }
           });
@@ -310,14 +310,14 @@ describe('Post API', function() {
             if (err) {
               console.log(err);
             } else {
-              console.log('posts are deleted!');
+              // console.log('posts are deleted!');
             }
           });
           User.remove({}, function(err) {
             if (err) {
               console.log(err);
             } else {
-              console.log('users are deleted!');
+              // console.log('users are deleted!');
             }
           });
         done();
