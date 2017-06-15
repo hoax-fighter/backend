@@ -7,7 +7,7 @@ const newsNegationCheck = require('../helper/newsNegationCheck');
 const webCheck = require('../helper/webCheck');
 const rules = require('../helper/hoaxRulesCheck');
 const summarizer = require('../helper/summarizer');
-import { url } from '../helper/constants';
+const url = require('../helper/constants');
 
 const simValPost = 50;
 const simValTbh = 60;
