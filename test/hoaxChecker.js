@@ -53,7 +53,6 @@ describe('Hoax Checker API', function() {
           if (err) {
             console.log('error');
           } else {
-            // console.log(result.body);
             result.body.success.should.equal(true);
             result.body.should.have.property('sources');
             result.body.should.have.property('result');

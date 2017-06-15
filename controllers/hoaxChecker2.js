@@ -61,8 +61,6 @@ const hoaxChecker = (req, res, next) => {
               } else if (sources) {
                 result.sources = [];
 
-                // console.log(sources);
-
                 // check for the content as whole
                 sources.map((source) => {
                   let content = source.hoax.replace('HOAX: ', '');
@@ -161,9 +159,7 @@ const hoaxChecker = (req, res, next) => {
                       console.log('checking the news for relevance and negations..');
                       newsSearchResult.map((news) => {
                         news.isUrlReputable = true;
-                        // console.log('processing news');
                         news.negation = newsNegationCheck(input, news.name);
-                        // console.log(news.negation);
                         if (Number(news.similarity) >= minSimVal) {
                           relevantNews.push(news);
                         }
@@ -222,7 +218,6 @@ const hoaxChecker = (req, res, next) => {
 
                             console.log('done fetching uncategorized web search');
                             let searchResult = response.data.record;
-                            // console.log(searchResult);
 
                             // check the url reputation
                             axios.get(`${url}api/source/news-source`)
@@ -238,15 +233,10 @@ const hoaxChecker = (req, res, next) => {
                                 axios.get(`${url}api/source/feedback`)
                                   .then((response) => {
                                     console.log('done fetching user feedback for web search result');
-                                    // console.log(response.data);
                                     response.data.feedbacks.map((feedback) => {
                                       checkedWebSources.sources.map((source) => {
-                                        // console.log('source name: ', source.name);
-                                        // console.log('feedback name: ', feedback.name);
                                         if (String(feedback.name) === String(source.name)) {
                                           source.feedback = feedback;
-                                          // relevantWeb.push(source);
-                                          // console.log(source);
                                         }
                                       });
                                     });
@@ -268,7 +258,6 @@ const hoaxChecker = (req, res, next) => {
 
                                       // relevant web entry found
                                       console.log('Found relevant entries from uncategorized web search');
-                                      // res.json({success: true, sources: relevantWeb, indications: result.indications});
                                       const relevantWebCheck = webCheck(relevantWeb, reputable, blacklist)
                                       let final = {
                                         success: true,
@@ -301,8 +290,6 @@ const hoaxChecker = (req, res, next) => {
                                         }
                                       };
 
-                                      // final.result = summarizer(final);
-
                                       res.json(final);
 
                                     }
@@ -320,9 +307,6 @@ const hoaxChecker = (req, res, next) => {
                                 console.log('error fetching url list');
                                 res.json({success: false, error: err});
                               });
-
-
-                            // res.json({message: 'searched the web', sources: searchResult});
 
 
                           })

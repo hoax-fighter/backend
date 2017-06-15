@@ -15,13 +15,11 @@ methods.getAll = (req, res, next) => {
 }
 
 methods.findById = (req, res, next) => {
-  // console.log('in controller, req.params.id: ', req.params.id);
   if (req.params.id) {
     if (req.params.id.length > 0) {
       Feedback.findById(req.params.id)
         .populate(['user', 'votes'])
         .exec(function (err, feedback) {
-          // console.log('in controller, found feedback: ', feedback);
           if (err) {
             res.json({ error: err, success: false });
           } else {

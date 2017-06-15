@@ -13,8 +13,6 @@ const stringNegationCheck = (string, negations) => {
     }
   });
 
-  // console.log(foundNegations);
-
   foundNegations.map((negation) => {
     stringWithoutNegation = string.replace(`${negation}`, '');
   });
@@ -70,7 +68,6 @@ const negationCheck = (string, hoax) => {
             result.result = true;
             result.isHoax = false;
             result.message = 'the string without negation finds similarity > 80 %, most likely not a hoax';
-            // console.log(result);
             return result;
 
           }
@@ -80,7 +77,6 @@ const negationCheck = (string, hoax) => {
           result.result = false;
           result.isHoax = true;
           result.message = 'the string without negation does not find similarity > 80 %, most likely a hoax';
-          // console.log(result);
           return result;
 
         }
@@ -90,7 +86,6 @@ const negationCheck = (string, hoax) => {
         result.result = false;
         result.isHoax = false;
         result.message = 'no title is higher than 75% in similarity';
-        // console.log(result);
         return result;
       }
 
@@ -98,7 +93,6 @@ const negationCheck = (string, hoax) => {
       result.result = false;
       result.isHoax = true;
       result.message = 'negation is not found in the string';
-      // console.log(result);
       return result;
 
     }

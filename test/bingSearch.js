@@ -17,7 +17,6 @@ describe('Bing', () => {
                 .post('/api/source/web')
                 .send(word)
                 .end((error, result) => {
-                    // console.log(result.body.record)
                     result.body.record.should.be.a('array')
                     result.body.record.length.should.equal(15)
                     result.body.success.should.equal(true)
@@ -35,7 +34,6 @@ describe('Bing', () => {
                 .post('/api/source/news')
                 .send(word)
                 .end((error, result) => {
-                    // console.log(result.body.record)
                     result.body.record.should.be.a('array')
                     result.body.record.length.should.equal(15)
                     result.body.success.should.equal(true)

@@ -1,29 +1,4 @@
-// input structure:
-// data = {
-//   posts: {
-//     hoaxVoteCount,
-//     nonHoaxVoteCount,
-//   },
-//   sources: {
-//     hasil,
-//     name,
-//     url,
-//     isUrlReputable,
-//     description,
-//     feedback: {
-//       hoaxVoteCount,
-//       nonHoaxVoteCount
-//     }
-//   },
-//   indications: {
-//     status,
-//     summary
-//   }
-// }
-
 const summarizer = (data) => {
-
-  // console.log(data);
 
   const indication = 1;
   if (data.indications.summary) {

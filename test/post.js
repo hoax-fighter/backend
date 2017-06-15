@@ -11,31 +11,6 @@ describe('Post API', function() {
 
   describe('/controllers/post.js', function() {
 
-
-
-    // beforeEach(function(done) {
-    //
-    //   done();
-    // });
-
-    // afterEach(function(done) {
-    //   Post.remove({}, function(err) {
-    //     if (err) {
-    //       console.log(err);
-    //     } else {
-    //       // console.log('posts are deleted!');
-    //     }
-    //   });
-    //   User.remove({}, function(err) {
-    //     if (err) {
-    //       console.log(err);
-    //     } else {
-    //       // console.log('users are deleted!');
-    //     }
-    //   });
-    //   done();
-    // });
-
     describe('GET /api/board/posts', function() {
 
       it('should get all posts', function(done) {
@@ -54,7 +29,6 @@ describe('Post API', function() {
             console.log(err);
           } else {
             userId = user._id;
-            // console.log('user ', user);
             const post = new Post({
               user: userId,
               title: 'qwerty',
@@ -66,7 +40,6 @@ describe('Post API', function() {
                 console.log(err);
               } else {
                 postId = post._id;
-                // console.log('post ', post);
               }
             });
           }
@@ -78,10 +51,8 @@ describe('Post API', function() {
             if (err) {
               console.log(err);
             } else {
-              // console.log(result.body);
               result.body.should.have.property('success').equal(true);
               result.body.should.have.property('posts');
-              // result.body.posts.length.should.equal(1);
             }
           });
 
@@ -89,14 +60,14 @@ describe('Post API', function() {
           if (err) {
             console.log(err);
           } else {
-            // console.log('posts are deleted!');
+            console.log('posts are deleted!');
           }
         });
         User.remove({}, function(err) {
           if (err) {
             console.log(err);
           } else {
-            // console.log('users are deleted!');
+            console.log('users are deleted!');
           }
         });
 
@@ -123,7 +94,6 @@ describe('Post API', function() {
             console.log(err);
           } else {
             userId = user._id;
-            // console.log('user ', user);
             const post = new Post({
               user: userId,
               title: 'qwerty',
@@ -135,8 +105,6 @@ describe('Post API', function() {
                 console.log(err);
               } else {
                 postId = post._id;
-                // console.log('post ', post);
-                // console.log('postId: ', postId);
                 let id;
                 chai.request(server)
                   .get(`/api/board/post/${id}`)
@@ -144,7 +112,6 @@ describe('Post API', function() {
                     if (err) {
                       console.log('error');
                     } else {
-                      // console.log('result.body ', result.body);
                       result.body.success.should.equal(false);
                       result.body.should.have.property('error');
                     }
@@ -157,14 +124,14 @@ describe('Post API', function() {
           if (err) {
             console.log(err);
           } else {
-            // console.log('posts are deleted!');
+            console.log('posts are deleted!');
           }
         });
         User.remove({}, function(err) {
           if (err) {
             console.log(err);
           } else {
-            // console.log('users are deleted!');
+            console.log('users are deleted!');
           }
         });
         done();
@@ -186,7 +153,6 @@ describe('Post API', function() {
             console.log(err);
           } else {
             userId = user._id;
-            // console.log('user ', user);
             const post = new Post({
               user: userId,
               title: 'qwerty',
@@ -198,8 +164,6 @@ describe('Post API', function() {
                 console.log(err);
               } else {
                 postId = post._id;
-                // console.log('post ', post);
-                // console.log('postId: ', postId);
                 let id = postId;
                 chai.request(server)
                   .get(`/api/board/post/${id}`)
@@ -207,7 +171,6 @@ describe('Post API', function() {
                     if (err) {
                       console.log('error');
                     } else {
-                      // console.log('result.body ', result.body);
                       result.body.success.should.equal(true);
                       result.body.should.have.property('post');
                     }
@@ -236,7 +199,6 @@ describe('Post API', function() {
             if (err) {
               console.log('error');
             } else {
-              // console.log('result.body ', result.body);
               result.body.success.should.equal(false);
               result.body.should.have.property('error');
             }
@@ -257,7 +219,6 @@ describe('Post API', function() {
             if (err) {
               console.log('error');
             } else {
-              // console.log('result.body ', result.body);
               result.body.success.should.equal(false);
               result.body.should.have.property('error');
             }
@@ -267,14 +228,14 @@ describe('Post API', function() {
             if (err) {
               console.log(err);
             } else {
-              // console.log('posts are deleted!');
+              console.log('posts are deleted!');
             }
           });
           User.remove({}, function(err) {
             if (err) {
               console.log(err);
             } else {
-              // console.log('users are deleted!');
+              console.log('users are deleted!');
             }
           });
 
@@ -291,7 +252,6 @@ describe('Post API', function() {
             content: 'doraemon adalah berasal dari ramalan yang akurat tentang masa depan.'
           })
           .end((err, result) => {
-            // console.log('result.body ', result.body);
             if (err) {
               console.log('error');
             } else {
@@ -304,14 +264,14 @@ describe('Post API', function() {
             if (err) {
               console.log(err);
             } else {
-              // console.log('posts are deleted!');
+              console.log('posts are deleted!');
             }
           });
           User.remove({}, function(err) {
             if (err) {
               console.log(err);
             } else {
-              // console.log('users are deleted!');
+              console.log('users are deleted!');
             }
           });
 
@@ -335,7 +295,6 @@ describe('Post API', function() {
             if (err) {
               console.log('error');
             } else {
-              // console.log('result.body ', result.body);
               chai.request(server)
                 .put(`/api/board/post/${result.body.post._id}`)
                 .send({
@@ -344,8 +303,6 @@ describe('Post API', function() {
                 .end((err, result) => {
                   console.log('put result.body: ', result.body);
                 });
-              // result.body.success.should.equal(true);
-              // result.body.should.have.property('post');
             }
           });
 
@@ -353,14 +310,14 @@ describe('Post API', function() {
             if (err) {
               console.log(err);
             } else {
-              // console.log('posts are deleted!');
+              console.log('posts are deleted!');
             }
           });
           User.remove({}, function(err) {
             if (err) {
               console.log(err);
             } else {
-              // console.log('users are deleted!');
+              console.log('users are deleted!');
             }
           });
         done();

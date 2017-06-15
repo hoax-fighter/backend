@@ -15,13 +15,11 @@ methods.getAll = (req, res, next) => {
 }
 
 methods.findById = (req, res, next) => {
-  // console.log('in controller, req.params.id: ', req.params.id);
   if (req.params.id) {
     if (req.params.id.length > 0) {
       Post.findById(req.params.id)
         .populate(['user', 'votes'])
         .exec(function (err, post) {
-          // console.log('in controller, found post: ', post);
           if (err) {
             res.json({ error: err, success: false });
           } else {
@@ -63,9 +61,6 @@ methods.create = (req, res, next) => {
 }
 
 methods.update = (req, res, next) => {
-  // console.log('        ------------in Post.update ---------');
-  // console.log('        req.params.id: ',req.params.id);
-  // console.log('        req.body: ',req.body);
   if (req.params.id) {
     Post.findById(req.params.id, (err, post) => {
       if (err) {
@@ -136,9 +131,6 @@ methods.vote = (req, res, next) => {
             let message = '';
 
             if (Number(req.body.value) !== Number(post.votes[foundIndex].value)) {
-              // console.log('original post.hoaxVoteCount: ', post.hoaxVoteCount);
-              // console.log('original post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
-              // console.log('original vote value: ', post.votes[foundIndex].value);
               if (Number(post.votes[foundIndex].value) === 1) {
                 post.hoaxVoteCount--;
                 post.votes[foundIndex].value = 0;
@@ -156,11 +148,6 @@ methods.vote = (req, res, next) => {
               }
 
               message = 'Edit vote berhasil';
-
-              // console.log('updated vote value: ', post.votes[foundIndex].value);
-              // console.log('updated post.hoaxVoteCount: ', post.hoaxVoteCount);
-              // console.log('updated post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
-              // console.log('updated vote value: ', post.votes[foundIndex].value);
 
               post.save((err, post) => {
                 if (err) {
@@ -199,76 +186,5 @@ methods.vote = (req, res, next) => {
   }
 
 }
-
-// methods.editVote = (req, res, next) => {
-//   if (req.params.postId && req.body.userId) {
-//     Post.findById(req.params.postId, (err, post) => {
-//       if (err) {
-//         res.json({ error: err, success: false });
-//       } else {
-//
-//         let message = '';
-//         let foundVote;
-//         let foundIndex;
-//
-//         post.votes.map((vote, index) => {
-//           console.log('vote.user: ', vote.user);
-//           console.log('body.userId: ', req.body.userId);
-//           if (String(vote.user) === String(req.body.userId)) {
-//             console.log('vote: ', vote);
-//             foundVote = vote;
-//             foundIndex = index;
-//           }
-//         });
-//
-//         if (foundVote) {
-//
-//           if (Number(req.body.value) !== Number(post.votes[foundIndex].value)) {
-//             console.log('original post.hoaxVoteCount: ', post.hoaxVoteCount);
-//             console.log('original post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
-//             console.log('original vote value: ', post.votes[foundIndex].value);
-//             if (Number(post.votes[foundIndex].value) === 1) {
-//               post.hoaxVoteCount --;
-//               post.votes[foundIndex].value = 0;
-//             } else if (Number(post.votes[foundIndex].value) === -1) {
-//               post.nonHoaxVoteCount --;
-//               post.votes[foundIndex].value = 0;
-//             } else {
-//               if (Number(req.body.value) === 1) {
-//                 post.hoaxVoteCount ++;
-//                 post.votes[foundIndex].value = req.body.value;
-//               } else {
-//                 post.nonHoaxVoteCount ++;
-//                 post.votes[foundIndex].value = req.body.value;
-//               }
-//             }
-//
-//             message = 'Edit vote berhasil';
-//
-//             console.log('updated vote value: ', post.votes[foundIndex].value);
-//             console.log('updated post.hoaxVoteCount: ', post.hoaxVoteCount);
-//             console.log('updated post.nonHoaxVoteCount: ', post.nonHoaxVoteCount);
-//             console.log('updated vote value: ', post.votes[foundIndex].value);
-//
-//             post.save((err, post) => {
-//               res.json({ post: post, success: true, message: message });
-//             });
-//
-//           } else {
-//             res.json({ success: false, error: 'Tidak bisa vote lagi!' });
-//           }
-//
-//         } else {
-//           res.json({ success: false, error: 'User tidak valid!' });
-//         }
-//
-//       }
-//     });
-//
-//   } else {
-//     res.json({ error: 'Id post dan Id user tidak boleh kosong', success: false });
-//   }
-//
-// }
 
 module.exports = methods;

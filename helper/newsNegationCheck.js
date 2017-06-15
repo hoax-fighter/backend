@@ -68,7 +68,6 @@ const negationCheck = (string, hoax) => {
             result.isInputNegated = true;
             result.isSourceSimilar = true;
             result.message = 'the string without negation has higher similarity, most likely same topic but negated';
-            // console.log(result);
             return result;
 
           }
@@ -78,7 +77,6 @@ const negationCheck = (string, hoax) => {
           result.isInputNegated = true;
           result.isSourceSimilar = false;
           result.message = 'the string without negation has lower similarity, most likely most likely different topic';
-          // console.log(result);
           return result;
 
         }
@@ -88,7 +86,6 @@ const negationCheck = (string, hoax) => {
         result.isInputNegated = true;
         result.isSourceSimilar = false;
         result.message = 'negation is found, however title is not higher than 50% in similarity, it is assumed to be irrelevant';
-        // console.log(result);
         return result;
       }
 
@@ -96,7 +93,6 @@ const negationCheck = (string, hoax) => {
       result.isInputNegated = false;
       result.isSourceSimilar = similarity.averagedSimilarity(string, hoax).value > 50;
       result.message = 'negation is not found in the string';
-      // console.log(result);
       return result;
 
     }

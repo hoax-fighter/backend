@@ -10,31 +10,6 @@ describe('User API', function() {
 
   describe('/controllers/user.js', function() {
 
-    // beforeEach(function(done) {
-    //   const user = new User({
-    //     uid: 'akdjfhaeiufhq8e9fha1',
-    //     username: 'johndoe',
-    //     email: 'john@doe.com'
-    //   });
-    //   user.save(function(err, user) {
-    //     if (err) {
-    //       console.log(err);
-    //     } else {
-    //       // console.log(user);
-    //     }
-    //   });
-    //   done();
-    // });
-
-    // afterEach(function(done) {
-    //   User.remove({}, function(err) {
-    //     if (err) {
-    //       console.log(err);
-    //     }
-    //   });
-    //   done();
-    // });
-
     describe('GET /api/board/users', function() {
 
       it('should get all user', function(done) {
@@ -47,7 +22,6 @@ describe('User API', function() {
           if (err) {
             console.log(err);
           } else {
-            // console.log(user);
             chai.request(server)
               .get('/api/board/users')
               .end((err, result) => {
@@ -84,7 +58,6 @@ describe('User API', function() {
           if (err) {
             console.log(err);
           } else {
-            // console.log('after saving user: ', user);
             email = user.email;
             chai.request(server)
               .get(`/api/board/users/find/${email}`)
@@ -176,21 +149,6 @@ describe('User API', function() {
           });
           done();
       });
-
-      // it('should return an error if user id is empty', function(done) {
-      //   let id = '';
-      //   chai.request(server)
-      //     .delete(`/api/board/users/${id}`)
-      //     .end((err, result) => {
-      //       if (err) {
-      //         console.log(err);
-      //       } else {
-      //         result.body.should.have.property('success').equal(false);
-      //         result.body.should.have.property('error');
-      //       }
-      //     });
-      //     done();
-      // });
 
     });
 

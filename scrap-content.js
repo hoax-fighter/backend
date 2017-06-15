@@ -120,14 +120,9 @@ methods.seedData = () => {
         let source = [];
         $('article').each((i, elm) => {
             let w = ['Fakta', 'FAKTA'];
-            // var header = $(elm).text()
-            // console.log($(elm).children()[0].children[0].children[0].data)
             var title = $(elm).children()[0].children[0].children[0].data;
             var content1 = $(elm).children().text().trim().split('Fakta');
             var content2 = $(elm).children().text().trim().split('FAKTA');
-            // let tempContent = w.map((val, idx) => {
-            //     return content = $(elm).children().text().trim().split(val);
-            // })
             if(content1[1] === undefined) {
                 source.push({
                     title: title,
@@ -148,9 +143,6 @@ methods.seedData = () => {
         return (source);
     })
         .then(source => {
-            // console.log(source[0]);
-            // console.log(source[0].hoax);
-            // console.log(source[0].fakta);
             axios.post('http://localhost:3002/api/source', {
                 title: source[0].title,
                 hoax: source[0].hoax,
@@ -159,9 +151,6 @@ methods.seedData = () => {
             }).then(res => {
                 console.log(res);
             })
-            // console.log('HOAX', source[0].hoax);
-            // console.log('FAKTA', source[0].fakta);
-            // console.log(source.hoax);
         })
 })
 }

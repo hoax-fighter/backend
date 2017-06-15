@@ -45,7 +45,6 @@ methods.web = (req, res, next) => {
         message: 'Cari Web Gagal'
       })
     } else {
-      // webCheck(body.webPages.value)
 
       if (body.webPages) {
 

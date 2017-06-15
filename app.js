@@ -1,16 +1,8 @@
-//atlas db = mongodb://diditaditya:hoaxchecker@liedb-shard-00-00-oj2ia.mongodb.net:27017,liedb-shard-00-01-oj2ia.mongodb.net:27017,liedb-shard-00-02-oj2ia.mongodb.net:27017/hoax-dev?ssl=true&replicaSet=LIEdb-shard-0&authSource=admin
-
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
-
-// app.use(function(req, res, next) {
-//  res.header("Access-Control-Allow-Origin", "*")
-//  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-//  next()
-// })
 
 app.use(cors());
 // mongoose setup
