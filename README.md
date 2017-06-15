@@ -1,7 +1,7 @@
 # hoax-fighter
 final project firefox
 
-## API endpoint
+## API endpoint LOCAL
 All started with http://localhost:3002
 
 ### Source API

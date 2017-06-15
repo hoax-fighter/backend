@@ -217,7 +217,7 @@ const hoaxChecker = (req, res, next) => {
 
                         // cannot find any relevant entry under news category
                         // search the web
-                        axios.post('http://localhost:3002/api/source/web', {word: input})
+                        axios.post(`${url}api/source/web`, {word: input})
                           .then((response) => {
 
                             console.log('done fetching uncategorized web search');
@@ -225,7 +225,7 @@ const hoaxChecker = (req, res, next) => {
                             // console.log(searchResult);
 
                             // check the url reputation
-                            axios.get('http://localhost:3002/api/source/news-source')
+                            axios.get(`${url}api/source/news-source`)
                               .then((response) => {
 
                                 const reputable = response.data.sources[0].reputable;
@@ -235,7 +235,7 @@ const hoaxChecker = (req, res, next) => {
 
                                 // combine with user feedback
                                 let relevantWeb = [];
-                                axios.get('http://localhost:3002/api/source/feedback')
+                                axios.get(`${url}api/source/feedback`)
                                   .then((response) => {
                                     console.log('done fetching user feedback for web search result');
                                     // console.log(response.data);
